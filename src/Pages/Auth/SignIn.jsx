@@ -2,7 +2,7 @@ import { LockOutlined } from "@mui/icons-material";
 import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
 
 import { Link } from "react-router-dom";
-import GoogleLogin from "../../Components/GoogleLogin/GoogleLogin";
+
 
 
 const Login = () => {
@@ -100,7 +100,7 @@ const Login = () => {
                                 </Link>
                             </Grid>
                         </Grid>
-                        <GoogleLogin />
+                        {/* <GoogleLogin /> */}
 
                     </Box>
                 </Box>

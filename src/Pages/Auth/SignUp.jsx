@@ -1,15 +1,16 @@
 import { LockOutlined } from "@mui/icons-material";
-import { Autocomplete, Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
+import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
 
 
 import { Link } from "react-router-dom";
-import GoogleLogin from "../../Components/GoogleLogin/GoogleLogin";
+
 import useDistricts from "../../hooks/useDistricts";
 import Option from "../../Components/Option/Option";
+import OptionAll from "../../Components/Option/OptionAll";
 
 
 const SignUp = () => {
-    const [districts] = useDistricts()
+    const [districts, handleDistricts, upuzzila] = useDistricts()
 
 
     const bloodGroup = [
@@ -29,6 +30,8 @@ const SignUp = () => {
 
         e.preventDefault()
         const data = new FormData(e.currentTarget)
+
+
 
         console.log({
             name: data.get('name'),
@@ -121,12 +124,12 @@ const SignUp = () => {
 
                                 <TextField
                                     margin="normal"
-                                    type="text"
+                                    type="file"
                                     required
                                     fullWidth
                                     id='profileImg'
                                     name="profileImg"
-                                    label
+
                                     autoFocus
 
                                 />
@@ -134,7 +137,7 @@ const SignUp = () => {
                             {/* Blood Group */}
                             <Grid item xs={12} sm={6} >
                                 {/* option  */}
-                                <Option
+                                <OptionAll
                                     data={bloodGroup}
                                     label={"Select Blood Group"}
                                     name={"blood"}
@@ -148,14 +151,15 @@ const SignUp = () => {
                                     data={districts}
                                     label={"Choose your districts"}
                                     name={"distrits"}
+                                    handleDistricts={handleDistricts}
                                 />
                             </Grid>
                             {/* Upuzilla */}
                             <Grid item xs={12} sm={6} >
                                 {/* option  */}
 
-                                <Option
-                                    data={districts}
+                                <OptionAll
+                                    data={upuzzila}
                                     label={"Choose your upuzilla"}
                                     name={"upuzilla"}
                                 />
@@ -232,7 +236,7 @@ const SignUp = () => {
 
 
 
-                        <GoogleLogin />
+                        {/* <GoogleLogin /> */}
                     </Box>
 
 

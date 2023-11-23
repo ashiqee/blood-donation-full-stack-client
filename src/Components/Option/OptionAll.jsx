@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material";
 
 
 
-const Option = ({ data, label, name, handleDistricts }) => {
+const OptionAll = ({ data, label, name }) => {
 
 
     return (
@@ -13,7 +13,7 @@ const Option = ({ data, label, name, handleDistricts }) => {
 
             autoHighlight
             getOptionLabel={(option) => option.name}
-            onChange={(e, selectOption) => handleDistricts(selectOption?.id)}
+
 
             renderInput={(params) => (
                 <TextField
@@ -31,4 +31,4 @@ const Option = ({ data, label, name, handleDistricts }) => {
     );
 };
 
-export default Option;
+export default OptionAll;
