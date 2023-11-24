@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import useAuth from '../../../hooks/useAuth';
 import { Link, NavLink } from 'react-router-dom';
 import { BloodtypeSharp } from '@mui/icons-material';
-import { red } from '@mui/material/colors';
+import { blueGrey, red } from '@mui/material/colors';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = [
@@ -57,10 +57,10 @@ function NavBar() {
     }
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{ background: "transparent", bgcolor: blueGrey[800], opacity: 'inherit', }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <BloodtypeSharp sx={{ display: { color: red[500], xs: 'none', md: 'flex' }, mr: 1 }} />
+                    <BloodtypeSharp sx={{ display: { color: red[500], fontSize: 80, textShadow: '-ms-grid', xs: 'none', md: 'flex' }, my: 2, mr: 1 }} />
                     <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Typography
                             variant="h6"
