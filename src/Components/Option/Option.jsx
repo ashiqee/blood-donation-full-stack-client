@@ -2,18 +2,21 @@ import { Autocomplete, TextField } from "@mui/material";
 
 
 
-const Option = ({ data, label, name, handleDistricts }) => {
+const Option = ({ data, label, name, handleDistricts, }) => {
 
+    const isOptionEqualToValue = (option, value) => {
+        return option?.id === value?.id
 
+    }
     return (
         <Autocomplete
             id={name}
             // sx={{ width: 300 }}
             options={data}
+            isOptionEqualToValue={isOptionEqualToValue}
 
-            autoHighlight
             getOptionLabel={(option) => option.name}
-            onChange={(e, selectOption) => handleDistricts(selectOption?.id)}
+            onChange={(e, value) => handleDistricts(e, value)}
 
             renderInput={(params) => (
                 <TextField
@@ -22,7 +25,7 @@ const Option = ({ data, label, name, handleDistricts }) => {
                     name={name}
                     const inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
+                        // autoComplete: 'new-password', // disable autocomplete and autofill
                     }}
 
                 />

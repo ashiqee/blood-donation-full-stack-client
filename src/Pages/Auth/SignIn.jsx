@@ -2,10 +2,14 @@ import { LockOutlined } from "@mui/icons-material";
 import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
 
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import Swal from "sweetalert2";
 
 
 
 const Login = () => {
+    const { signIn } = useAuth()
+
 
 
     const handleSubmit = (e) => {
@@ -13,10 +17,19 @@ const Login = () => {
         e.preventDefault()
         const data = new FormData(e.currentTarget)
 
-        console.log({
-            email: data.get('email'),
-            password: data.get('password')
-        });
+
+        const email = data.get('email');
+        const password = data.get('password')
+
+        signIn(email, password)
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: "Login Successfully",
+            showConfirmButton: false,
+            timer: 1500,
+        })
+
 
     }
 

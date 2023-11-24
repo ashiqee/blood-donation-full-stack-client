@@ -1,5 +1,7 @@
 import { LockOutlined } from "@mui/icons-material";
 import { Avatar, Box, Button, Checkbox, FormControlLabel, Grid, Paper, TextField, Typography } from "@mui/material"
+const image_hosting = import.meta.env.VITE_IMAGE_HOST;
+const img_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting}`
 
 
 import { Link } from "react-router-dom";
@@ -7,10 +9,19 @@ import { Link } from "react-router-dom";
 import useDistricts from "../../hooks/useDistricts";
 import Option from "../../Components/Option/Option";
 import OptionAll from "../../Components/Option/OptionAll";
+import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
+import usePublicAxios from "../../hooks/usePublicAxios";
+import Swal from "sweetalert2";
+
 
 
 const SignUp = () => {
     const [districts, handleDistricts, upuzzila] = useDistricts()
+    const { createUser, updateUser } = useAuth()
+    const [img, setImg] = useState('')
+    const axiosPublic = usePublicAxios()
+
 
 
     const bloodGroup = [
@@ -26,23 +37,105 @@ const SignUp = () => {
 
 
 
-    const handleSubmit = (e) => {
 
+    const handleSubmit = async (e) => {
         e.preventDefault()
+
         const data = new FormData(e.currentTarget)
+        const imageFile = data.get("profileImg")
 
 
 
-        console.log({
+        const reader = new FileReader();
+
+        reader.onloadend = async () => {
+            const imageUrl = reader.result;
+            setImg(imageUrl)
+
+            const formData = new FormData();
+            formData.append('profileImg', imageFile)
+            try {
+                const res = await axiosPublic.post(img_hosting_api, formData, {
+                    headers: {
+                        'Content-Type': "multipart/form-data",
+                    },
+                });
+                if (res.data.success) {
+                    alert('Img Upload Success Full')
+                    console.log(res.data.data.display_url);
+
+                    // todo: send data here
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Image Upload failed')
+            }
+
+        }
+        console.log(imageFile);
+        reader.readAsDataURL(imageFile)
+
+
+
+
+
+
+
+
+
+        const email = data.get('email')
+        const password = data.get('password')
+        const name = data.get('name');
+        const photo = "https://www.thedivorceangels.com/wp-content/themes/divorceangels/images/avatars/default-8.png";
+
+
+
+
+
+        createUser(email, password)
+            .then(result => {
+                const newUser = result.user;
+                console.log(newUser);
+
+
+                updateUser(name, photo)
+                    .then(() => {
+
+                        console.log("update User Info   ");
+
+
+                    })
+
+
+
+
+            })
+
+
+        // TODO: SEND DB
+        const userInfo = ({
             name: data.get('name'),
+            profileImg: photo,
             email: data.get('email'),
             blood: data.get('blood'),
-            profileImg: data.get('profileImg'),
             districts: data.get('distrits'),
             upuzilla: data.get('upuzilla'),
-            password: data.get('password')
+            status: "active"
+
 
         });
+
+        const userRegInfo = await axiosPublic.post('/user', userInfo)
+        if (userRegInfo.data.insertedId); {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: `Registration Successful`,
+                showConfirmButton: false,
+                timer: 1500,
+            });
+        }
+
 
     }
 
@@ -68,6 +161,8 @@ const SignUp = () => {
                 }}
             />
 
+
+
             <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square >
                 <Box
                     sx={{
@@ -80,9 +175,10 @@ const SignUp = () => {
                 >
 
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} >
-
+                        <img src={img} alt="Preview" style={{ maxWidth: '100%' }} />
                         <LockOutlined />
                     </Avatar>
+
                     <Typography component='h1' variant="h5" >
                         Sign Up
                     </Typography>
@@ -119,8 +215,10 @@ const SignUp = () => {
 
                                 />
                             </Grid>
+
                             {/* profile Img */}
                             <Grid item xs={12} sm={6} >
+
 
                                 <TextField
                                     margin="normal"
@@ -129,13 +227,14 @@ const SignUp = () => {
                                     fullWidth
                                     id='profileImg'
                                     name="profileImg"
+                                    variant="outlined"
+                                    InputProps={{ shrink: true }}
 
-                                    autoFocus
 
                                 />
                             </Grid>
                             {/* Blood Group */}
-                            <Grid item xs={12} sm={6} >
+                            <Grid item xs={12} mt={2} sm={6} >
                                 {/* option  */}
                                 <OptionAll
                                     data={bloodGroup}
@@ -152,17 +251,24 @@ const SignUp = () => {
                                     label={"Choose your districts"}
                                     name={"distrits"}
                                     handleDistricts={handleDistricts}
+
+
                                 />
                             </Grid>
                             {/* Upuzilla */}
                             <Grid item xs={12} sm={6} >
                                 {/* option  */}
 
+
                                 <OptionAll
                                     data={upuzzila}
                                     label={"Choose your upuzilla"}
                                     name={"upuzilla"}
+
+
                                 />
+
+
 
 
 
@@ -186,7 +292,7 @@ const SignUp = () => {
                             </Grid>
                             {/* Confirm Password  */}
                             <Grid item xs={12} sm={6} >
-                                <TextField
+                                {/* <TextField
                                     margin="normal"
                                     type="password"
                                     required
@@ -197,7 +303,7 @@ const SignUp = () => {
                                     autoComplete="confirm-password"
 
 
-                                />
+                                /> */}
                             </Grid>
 
                         </Grid>

@@ -4,7 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 
 const useDistricts = () => {
-    const [districtId, setDistrictid] = useState('')
+    const [districtId, setDistrictid] = useState(1)
+
+
     const axiosPublic = usePublicAxios()
 
 
@@ -13,7 +15,7 @@ const useDistricts = () => {
         queryKey: ['districs'],
         queryFn: async () => {
             const res = await axiosPublic.get('/districts')
-            // console.log(res.data);
+
             return res.data
         }
     })
@@ -32,11 +34,12 @@ const useDistricts = () => {
 
     // console.log(upuzzila);
     // get district id 
-    const handleDistricts = (e) => {
+    const handleDistricts = (e, value) => {
 
-        const eInt = parseInt(e)
 
-        setDistrictid(eInt)
+
+        setDistrictid(value.id)
+        refetch()
     }
 
     useEffect(() => {
@@ -49,7 +52,7 @@ const useDistricts = () => {
 
         //         setDistrict(data)
         //     })
-    }, [districtId])
+    }, [districtId, refetch])
 
     // useEffect(() => {
     //     const getUpuzilla = async () => {

@@ -5,6 +5,10 @@ import { Autocomplete, TextField } from "@mui/material";
 const OptionAll = ({ data, label, name }) => {
 
 
+    const isOptionEqualToValue = (option, value) => {
+        return option?.id === value?.id
+
+    }
     return (
         <Autocomplete
             id={name}
@@ -14,15 +18,16 @@ const OptionAll = ({ data, label, name }) => {
             autoHighlight
             getOptionLabel={(option) => option.name}
 
-
+            isOptionEqualToValue={isOptionEqualToValue}
             renderInput={(params) => (
                 <TextField
                     {...params}
                     label={label}
                     name={name}
-                    const inputProps={{
+                    inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
+
+                        // autoComplete: '', // disable autocomplete and autofill
                     }}
 
                 />
