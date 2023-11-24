@@ -1,12 +1,14 @@
 import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import app from "../Config/Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
+import usePublicAxios from "../hooks/usePublicAxios";
 
 export const AuthContext = createContext(null)
 const AuthProvider = ({ children }) => {
     const auth = getAuth(app)
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
+    const axiosPublic = usePublicAxios()
 
 
 
@@ -44,16 +46,26 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser)
             if (currentUser) {
                 const userInfo = { email: currentUser.email }
-                console.log(userInfo);
+                axiosPublic.post('/jwt', userInfo).then((res) => {
+                    if (res.data?.token) {
+                        localStorage.setItem('token', res.data?.token);
+
+                        setLoading(false)
+                    }
+                })
+                // console.log(userInfo);
+            } else {
+                localStorage.removeItem('token');
                 setLoading(false)
             }
+
             console.log('State Check user is', currentUser);
         });
         return () => {
             return unSubscribe()
         }
 
-    }, [auth])
+    }, [auth, axiosPublic])
     const authInfo = {
         loading,
         createUser,
