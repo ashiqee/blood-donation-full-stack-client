@@ -9,6 +9,7 @@ import ButtonCom from '../../Button/ButtonCom';
 import { Button } from '@mui/material';
 import { RiKnifeBloodFill } from 'react-icons/ri';
 import { BloodtypeOutlined } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 
 const Banner = () => {
@@ -20,10 +21,10 @@ const Banner = () => {
       <div>  <img className='w-48 relative z-0 bottom-0 -top-10 -right-10' src="https://www.cpsmumbai.org/Uploads/2762023161833920.png" alt="" /></div>
       <div className='flex gap-5  h-17 justify-center items-center'>
         <div>
-          <Button variant='contained' sx={{ bgcolor: "secondary.main", color: "white" }}> Join as a donor </Button>
+          <Link to='/signUp'> <Button variant='contained' sx={{ bgcolor: "secondary.main", color: "white" }}> Join as a donor </Button></Link>
         </div>
         <div>
-          <ButtonCom text={'Search Donors'} />
+          <Link to='/searchDonors' > <ButtonCom text={'Search Donors'} /> </Link>
         </div>
       </div>
     </div>

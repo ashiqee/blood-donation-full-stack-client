@@ -11,6 +11,7 @@ import DashboardLayOut from './../Layout/DashboardLayOut';
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import DonationRequest from "../Pages/Dashboard/Donation/DonationRequest";
 import Blog from "../Pages/Blog/Blog";
+import SearchDonors from "../Pages/SearchDonors/SearchDonors";
 
 const router = createBrowserRouter([
     {
@@ -30,18 +31,14 @@ const router = createBrowserRouter([
                 element: <DonationRequest />
             },
             {
+                path: 'searchDonors',
+                element: <SearchDonors />
+            },
+            {
                 path: 'blog',
                 element: <Blog />
             },
-            {
-                path: '/signUp',
-                element: <SignUp />
-            },
-            {
-                path: '/login',
-                element: <SignIn />
 
-            }
         ]
     },
     {
@@ -53,6 +50,15 @@ const router = createBrowserRouter([
                 element: <Dashboard />
             }
         ]
+    },
+    {
+        path: '/signUp',
+        element: <SignUp />
+    },
+    {
+        path: '/login',
+        element: <SignIn />
+
     }
 ]);
 

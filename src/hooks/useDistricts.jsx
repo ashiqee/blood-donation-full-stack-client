@@ -3,11 +3,18 @@ import usePublicAxios from "./usePublicAxios";
 import { useQuery } from "@tanstack/react-query";
 
 
+
 const useDistricts = () => {
     const [districtId, setDistrictid] = useState(1)
 
 
     const axiosPublic = usePublicAxios()
+
+
+
+
+
+
 
 
     //get districts data
@@ -23,7 +30,7 @@ const useDistricts = () => {
     const { data: upuzzila = [], refetch } = useQuery({
         queryKey: ['upuzzila'],
         queryFn: async () => {
-            const res = await axiosPublic.get(`/upuzila/${districtId}`)
+            const res = await axiosPublic.get(`/upuzilas/${districtId}`)
             // console.log(res.data);
             return res.data
         }
@@ -38,7 +45,7 @@ const useDistricts = () => {
 
 
 
-        setDistrictid(value.id)
+        setDistrictid(value.districtId)
         refetch()
     }
 
