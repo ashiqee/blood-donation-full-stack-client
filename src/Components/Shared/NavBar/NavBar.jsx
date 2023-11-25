@@ -15,7 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import useAuth from "../../../hooks/useAuth";
 import { Link, NavLink } from "react-router-dom";
 import { BloodtypeSharp } from "@mui/icons-material";
-import { blueGrey, red } from "@mui/material/colors";
+
 
 const pages = [
   { name: "home", path: "/" },
@@ -61,8 +61,8 @@ function NavBar() {
             to="/"
             className={({ isActive }) =>
               isActive
-                ? "border-b-4 p-2 border-pink-400 font-bold text-pink-400 hover:text-pink-400"
-                : "p-2 hover:border-b-4 font-bold border-pink-400 hover:text-pink-400"
+                ? "border-b-4 p-2 pb-5 border-white font-bold text-white hover:text-white"
+                : "pb-5 p-2 hover:border-b-4 font-bold border-white hover:text-white"
             }
           >
             Home
@@ -73,8 +73,8 @@ function NavBar() {
             to="/donationRequest"
             className={({ isActive }) =>
               isActive
-                ? "border-b-4 p-2 border-pink-400 font-bold text-pink-400 hover:text-pink-400"
-                : "p-2 hover:border-b-4 font-bold border-pink-400 hover:text-pink-400"
+                ? "border-b-4 p-2 pb-5 border-white font-bold text-white hover:text-white"
+                : "pb-5 p-2 hover:border-b-4 font-bold border-white hover:text-white"
             }
           >
             Donation request
@@ -85,8 +85,8 @@ function NavBar() {
             to="/blog"
             className={({ isActive }) =>
               isActive
-                ? "border-b-4 p-2 border-pink-400 font-bold text-pink-400 hover:text-pink-400"
-                : "p-2 hover:border-b-4 font-bold border-pink-400 hover:text-pink-400"
+                ? "border-b-4 p-2 pb-5 border-white font-bold text-white hover:text-white"
+                : "pb-5 p-2 hover:border-b-4 font-bold border-white hover:text-white"
             }
           >
             Blog
@@ -101,8 +101,8 @@ function NavBar() {
       position="static"
       sx={{
         background: "transparent",
-        bgcolor: blueGrey[800],
-        opacity: "inherit",
+        bgcolor: '#f34334',
+        opacity: "50px",
       }}
     >
       <Container maxWidth="xl">
@@ -110,7 +110,7 @@ function NavBar() {
           <BloodtypeSharp
             sx={{
               display: {
-                color: red[500],
+                color: "white",
                 fontSize: 80,
                 textShadow: "-ms-grid",
                 xs: "none",
@@ -130,12 +130,13 @@ function NavBar() {
                 display: { xs: "none", md: "flex" },
 
                 fontWeight: 700,
+                fontSize: "40px",
                 letterSpacing: ".1rem",
-                color: "whitesmoke",
+                color: "white",
                 textDecoration: "none",
               }}
             >
-              Blood Donation
+              Blood <br /><span className="text-sm ml-2 relative -top-1 right-5" > Donation</span>
             </Typography>
           </Link>
 
@@ -219,16 +220,17 @@ function NavBar() {
             <>
               <NavLink to="/login">
                 <Button
-                  variant="outlined"
-                  sx={{ fontSize: "16px", fontWeight: "200", mr: "20px" }}
+                  variant="contained"
+
+                  sx={{ fontSize: "16px", bgcolor: "white", color: 'primary.main', fontWeight: "600", mr: "20px" }}
                 >
                   Login
                 </Button>{" "}
               </NavLink>
               <NavLink to="/signUp">
                 <Button
-                  variant="outlined"
-                  sx={{ fontSize: "16px", fontWeight: "200" }}
+                  variant="contained"
+                  sx={{ fontSize: "16px", bgcolor: "white", color: 'primary.main', fontWeight: "600" }}
                 >
                   Registration
                 </Button>{" "}
