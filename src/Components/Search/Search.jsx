@@ -1,10 +1,11 @@
 // import { useForm } from "react-hook-form";
 
-import { TextField } from '@mui/material';
-import ButtonCom from '../Button/ButtonCom';
+import { Box, Button, TextField } from '@mui/material';
+
 import Option from '../Option/Option';
 import OptionAll from '../Option/OptionAll';
 import useDistricts from './../../hooks/useDistricts';
+import { SearchSharp } from '@mui/icons-material';
 
 
 
@@ -29,65 +30,88 @@ const Search = () => {
         { "id": 8, "name": "O-" }
     ]
 
+    const handleSearch = (e) => {
+        e.preventDefault()
 
+        const data = new FormData(e.currentTarget)
+
+        const searchData = {
+            blood: data.get('blood'),
+            district: data.get('district'),
+            upizila: data.get('upuzlia'),
+            email: data.get('email')
+        }
+
+        console.log(searchData);
+    }
     return (
-        <div className='flex my-auto items-center justify-center  p-32 gap-5'>
-            {/* Distric  */}
+        <Box component="form" onSubmit={handleSearch} >
 
-            {/* Blood  */}
-            <div className='w-48'>
-                <OptionAll
-                    data={bloodGroup}
-                    label={"Select Blood Group"}
-                    name={"blood"}
+            <div className='flex my-auto items-center justify-center  p-32 gap-5'>
+                {/* Distric  */}
 
-                />
+                {/* Blood  */}
+                <div className='w-48'>
+                    <OptionAll
+                        data={bloodGroup}
+                        label={"Select Blood Group"}
+                        name={"blood"}
+
+                    />
+
+                </div>
+                <div className='w-48'>
+                    <Option
+                        data={districts}
+                        label={"Choose a districts"}
+                        name={"district"}
+                        handleDistricts={handleDistricts}
+
+                    ></Option>
+                </div>
+
+                {/* Upuzila  */}
+
+                {/* option  */}
+                <div className='w-48'>
+                    <Option
+                        data={upuzzila}
+                        label={"Choose a upuzila"}
+                        name={"upuzlia"}
+                        handleDistricts={handleDistricts}
+
+
+                    />
+
+                </div>
+                <div className='w-48'>
+                    <TextField
+                        type="email"
+                        id='email'
+                        name="email"
+                        label='email'
+                        autoComplete="email"
+
+
+                    />
+                </div>
+
+
+
+                <Button type="submit"
+
+
+                    variant="contained"
+                    sx={{ p: "15px", color: "white" }} >
+                    <SearchSharp /> Search
+                </Button>
+
+
+
 
             </div>
-            <div className='w-48'>
-                <Option
-                    data={districts}
-                    label={"Choose a districts"}
-                    name={"distrits"}
-                    handleDistricts={handleDistricts}
+        </Box>
 
-                ></Option>
-            </div>
-
-            {/* Upuzila  */}
-
-            {/* option  */}
-            <div className='w-48'>
-                <Option
-                    data={upuzzila}
-                    label={"Choose a upuzila"}
-                    name={"upuzila"}
-                    handleDistricts={handleDistricts}
-
-
-                />
-
-            </div>
-            <div className='w-48'>
-                <TextField
-                    type="email"
-                    id='email'
-                    name="email"
-                    label='email'
-                    autoComplete="email"
-
-
-                />
-            </div>
-
-
-
-            <ButtonCom text={"Search"} />
-
-
-
-
-        </div>
 
 
         // <form onSubmit={handleSubmit((data) => console.log(data))}>

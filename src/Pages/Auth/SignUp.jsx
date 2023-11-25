@@ -292,7 +292,7 @@ const SignUp = () => {
                             </Grid>
                             {/* Confirm Password  */}
                             <Grid item xs={12} sm={6} >
-                                {/* <TextField
+                                <TextField
                                     margin="normal"
                                     type="password"
                                     required
@@ -303,7 +303,7 @@ const SignUp = () => {
                                     autoComplete="confirm-password"
 
 
-                                /> */}
+                                />
                             </Grid>
 
                         </Grid>
