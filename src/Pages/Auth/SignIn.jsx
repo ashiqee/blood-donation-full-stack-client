@@ -92,7 +92,7 @@ const Login = () => {
               type="password"
               fullWidth
               id="password"
-              label="passwrod"
+              label="password"
               name="password"
               autoComplete="current-password"
             />
