@@ -8,7 +8,7 @@ import { Box, TextField } from "@mui/material";
 
 import { Edit } from "@mui/icons-material";
 
-const image_hosting = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting = import.meta.env.VITE_IMAGE_HOST;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting}`;
 
 const ProfileModal = () => {
@@ -70,7 +70,7 @@ const ProfileModal = () => {
         if (response.ok) {
           const data = await response.json();
           const { display_url } = data.data;
-          // console.log("Image uploaded successfully:", display_url);
+          console.log("Cover Image uploaded successfully:", display_url);
           setCoverImage(display_url);
         } else {
           console.error("Image upload failed:", response.statusText);
@@ -92,7 +92,7 @@ const ProfileModal = () => {
       districts: data.get("districts"),
       upuzilla: data.get("upuzlia"),
       profileImg: profileImage,
-      // coverImg: coverImg,
+      coverImg: coverImage,
     };
 
     console.log(userInfo);
