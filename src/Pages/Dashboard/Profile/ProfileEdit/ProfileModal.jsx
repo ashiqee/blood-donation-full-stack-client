@@ -7,11 +7,16 @@ import OptionAll from "../../../../Components/Option/OptionAll";
 import { Box, TextField } from "@mui/material";
 
 import { Edit } from "@mui/icons-material";
+import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 const image_hosting = import.meta.env.VITE_IMAGE_HOST;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting}`;
 
-const ProfileModal = () => {
+const ProfileModal = (userData, refetch) => {
+  const axiosSecure = useAxiosSecure()
+  const { blood, _id, districts: district, upuzilla, name, profileImg, coverImg } = userData;
+
   const [open, setOpen] = useState(false);
   const [districts, handleDistricts, upuzzila] = useDistricts();
   const [profileImage, setProfileImage] = useState("");
@@ -89,13 +94,31 @@ const ProfileModal = () => {
     const userInfo = {
       name: data.get("name"),
       blood: data.get("blood"),
-      districts: data.get("districts"),
-      upuzilla: data.get("upuzlia"),
-      profileImg: profileImage,
-      coverImg: coverImage,
+      districts: data.get("districts") || district,
+      upuzilla: data.get("upuzlia") || upuzilla,
+      profileImg: profileImage || profileImg,
+      coverImg: coverImage || coverImg,
     };
 
-    console.log(userInfo);
+
+    await axiosSecure.patch(`/user/updateProfile/${_id}`, userInfo)
+      .then(res => {
+        console.log(res.data)
+        refetch()
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            title: `You user profile Updated Successfully!`,
+            icon: 'success',
+            position: 'center',
+            timer: 1500
+          })
+
+          setOpen(false)
+        }
+      })
+
+
+
   };
 
   return (
@@ -154,6 +177,7 @@ const ProfileModal = () => {
                               id="name"
                               name="name"
                               label="name"
+                              defaultValue={name}
                               autoComplete="name"
                             />
                           </div>
@@ -161,7 +185,8 @@ const ProfileModal = () => {
                           <div className="w-full">
                             <OptionAll
                               data={bloodGroup}
-                              label={"Select Blood Group"}
+                              value={blood}
+                              label={blood}
                               name={"blood"}
                             />
                           </div>
@@ -171,7 +196,7 @@ const ProfileModal = () => {
                           <div className="w-full">
                             <Option
                               data={districts}
-                              label={"Choose a districts"}
+                              label={district}
                               name={"districts"}
                               handleDistricts={handleDistricts}
                             ></Option>
@@ -182,7 +207,7 @@ const ProfileModal = () => {
                           <div className="w-full">
                             <Option
                               data={upuzzila}
-                              label={"Choose a upuzila"}
+                              label={upuzilla}
                               name={"upuzlia"}
                               handleDistricts={handleDistricts}
                             />

@@ -12,6 +12,7 @@ import {
   RiMenuFoldFill,
   RiMenuUnfoldFill,
   RiUser2Fill,
+  RiUserShared2Line,
   RiUserStarFill,
 } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
@@ -65,10 +66,10 @@ const SideBar = () => {
                   Dashboard
                 </ListItem>
               </NavLink>
-              <NavLink to="/users">
+              <NavLink to="/dashboard/usersManage">
                 <ListItem>
                   <ListItemPrefix>
-                    <RiUserStarFill className="h-5 w-5" />
+                    <RiUserShared2Line className="h-5 w-5" />
                   </ListItemPrefix>
                   User Manage
                 </ListItem>

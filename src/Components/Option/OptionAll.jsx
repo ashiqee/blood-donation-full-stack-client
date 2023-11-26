@@ -1,6 +1,6 @@
 import { Autocomplete, TextField } from "@mui/material";
 
-const OptionAll = ({ data, label, name }) => {
+const OptionAll = ({ data, label, name, value }) => {
   const isOptionEqualToValue = (option, value) => {
     return option?.id === value?.id;
   };
@@ -17,19 +17,15 @@ const OptionAll = ({ data, label, name }) => {
           {...params}
           label={label}
           name={name}
+          defaultValue={value}
           inputProps={{
             ...params.inputProps,
 
-            // autoComplete: '', // disable autocomplete and autofill
+            autoComplete: 'auto', // disable autocomplete and autofill
           }}
         />
       )}
-      sx={{
-        "& .MuiAutocomplete-popupIndicator": {
-          zIndex: 10,
-          display: "relative",
-        },
-      }}
+
     />
   );
 };

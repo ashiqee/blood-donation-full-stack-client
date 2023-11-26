@@ -10,6 +10,7 @@ import DonationRequest from "../Pages/Dashboard/Donation/DonationRequest";
 import Blog from "../Pages/Blog/Blog";
 import SearchDonors from "../Pages/SearchDonors/SearchDonors";
 import Profile from "./../Pages/Dashboard/Profile/Profile";
+import AllUsers from "../Pages/Dashboard/AdminHome/AllUsers";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
         path: "/dashboard/profile",
         element: <Profile />,
       },
+      {
+        path: '/dashboard/usersManage',
+        element: <AllUsers />
+      }
     ],
   },
   {

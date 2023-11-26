@@ -74,29 +74,111 @@ const SignUp = () => {
 
     const data = new FormData(e.currentTarget);
 
+    const photo = profileImage;
     const email = data.get("email");
     const password = data.get("password");
     const name = data.get("name");
+    const blood = data.get("blood");
+    const districts = data.get("distrits");
+    const upuzilla = data.get("upuzilla");
+    if (email === "") {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Please Provide Email ID`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return
+    }
+    if (name === "") {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Please Provide Name`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return
+    } else if (password === '' || password.length < 6) {
+
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Password must be six digit`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return
+    } else if (blood === '') {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Please Select blood group`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return;
+    }
+    else if (districts === '') {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Please Select your district`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return;
+    }
+    else if (upuzilla === '') {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: `Please select your upuzila`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
+      return;
+    }
+
+
+    const defaultCoverImg = 'https://images.pexels.com/photos/12227661/pexels-photo-12227661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+
+
+    const userInfo = {
+      name: name,
+      profileImg: photo,
+      coverImg: defaultCoverImg,
+      email: email,
+      blood: blood,
+      districts: districts,
+      upuzilla: upuzilla,
+      role: 'guest',
+      status: "active",
+    };
+
+    // Test code 
+    // if (userInfo) {
+    //   console.log(userInfo);
+    //   return
+    // }
 
     createUser(email, password).then((result) => {
       const newUser = result.user;
       console.log(newUser);
 
-      updateUser(name, profileImage).then(() => {
+      updateUser(name, photo).then(() => {
         console.log("update User Info   ");
       });
     });
 
-    // TODO: SEND DB
-    const userInfo = {
-      name: data.get("name"),
-      profileImg: profileImage,
-      email: data.get("email"),
-      blood: data.get("blood"),
-      districts: data.get("distrits"),
-      upuzilla: data.get("upuzilla"),
-      status: "active",
-    };
+    //  SEND DB
 
     const userRegInfo = await axiosPublic.post("/user", userInfo);
     if (userRegInfo.data.insertedId);
@@ -237,6 +319,7 @@ const SignUp = () => {
                   id="password"
                   label="passwrod"
                   name="password"
+
                   autoComplete="current-password"
                 />
               </Grid>

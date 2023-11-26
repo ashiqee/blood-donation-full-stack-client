@@ -9,7 +9,7 @@ import {
 // import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { Bloodtype, LocalActivity } from "@mui/icons-material";
 
-export function TabsWithIcon() {
+export function TabsWithIcon({ blood, districts, upuzilla }) {
   const data = [
     {
       label: "Address",
@@ -18,8 +18,8 @@ export function TabsWithIcon() {
       desc: (
         <>
           <div className="grid gap-5">
-            <h2 className="text-2xl">Districts: </h2>
-            <h2 className="text-2xl">Upuzila: </h2>
+            <h2 className="text-2xl">Districts: {districts} </h2>
+            <h2 className="text-2xl">Upuzila: {upuzilla} </h2>
           </div>
         </>
       ),
@@ -36,7 +36,7 @@ export function TabsWithIcon() {
               src="https://media3.giphy.com/media/jOPdiG2z1wkZbDeJG0/giphy.gif?cid=6c09b952y4bs9v663opvnaif6zlgit7tpykpsiipuytgs39t&ep=v1_stickers_related&rid=giphy.gif&ct=s"
               alt=""
             />
-            <h2 className="text-4xl text-center">A+</h2>
+            <h2 className="text-4xl text-center">{blood}</h2>
           </div>
         </>
       ),
