@@ -37,13 +37,13 @@ const SideBar = () => {
     }
   }, [isSmallSecreen]);
   return (
-    <div>
+    <div className="min-h-screen shadow-xl bg-gradient-to-r from-pink-50 to-orange-50 shadow-blue-gray-900/50">
       {isOpen ? (
         <>
           {" "}
           <Card
-            className=" h-[calc(100vh-2rem)] ease-in-out 
-                     w-full max-w-[20rem] p-4 shadow-xl bg-gradient-to-r from-pink-50 to-orange-50 shadow-blue-gray-900/50"
+            className="  ease-in-out  bg-gradient-to-r from-pink-50 to-orange-50 
+                     w-full max-w-[20rem] p-4 "
           >
             <div className="mb-2 p-4">
               <Typography variant="h5">
@@ -124,15 +124,63 @@ const SideBar = () => {
         </>
       ) : (
         <>
-          <div className="flex items-center">
-            <button
-              className="p-5 text-2xl "
-              onClick={() => setIsOpen(!isOpen)}
-            >
-              {" "}
-              <RiMenuUnfoldFill />
-            </button>
-            <h2 className="text-2xl">Blood Donation</h2>
+          {/* Small Device  */}
+          <div className="min-h-screen shadow-xl bg-gradient-to-r from-pink-50 to-orange-50 shadow-blue-gray-900/50">
+            <div className=" px-3  grid gap-4 justify-center mx-auto pr-0  items-center">
+              <button className=" text-2xl " onClick={() => setIsOpen(!isOpen)}>
+                {" "}
+                <RiMenuUnfoldFill />
+              </button>
+
+              <NavLink to="/dashboard">
+                <ListItem>
+                  <ListItemPrefix>
+                    <DashboardCustomizeTwoTone className="h-5 w-5" />
+                  </ListItemPrefix>
+                </ListItem>
+              </NavLink>
+              <NavLink to="/users">
+                <ListItem>
+                  <ListItemPrefix>
+                    <RiUserStarFill className="h-5 w-5" />
+                  </ListItemPrefix>
+                </ListItem>
+              </NavLink>
+              <ListItem>
+                <ListItemPrefix>
+                  <BloodtypeSharp className="h-5 w-5" />
+                </ListItemPrefix>
+
+                <ListItemSuffix></ListItemSuffix>
+              </ListItem>
+              <ListItem>
+                <ListItemPrefix>
+                  <Inbox className="h-5 w-5" />
+                </ListItemPrefix>
+              </ListItem>
+
+              <Divider />
+              {/* shared menu  */}
+              <NavLink to="/dashboard/profile">
+                <ListItem>
+                  <ListItemPrefix>
+                    <RiUser2Fill className="h-5 w-5" />
+                  </ListItemPrefix>
+                </ListItem>
+              </NavLink>
+              <NavLink to="/">
+                <ListItem>
+                  <ListItemPrefix>
+                    <Home className="h-5 w-5" />
+                  </ListItemPrefix>
+                </ListItem>
+              </NavLink>
+              <ListItem>
+                <ListItemPrefix>
+                  <PowerOff className="h-5 w-5" />
+                </ListItemPrefix>
+              </ListItem>
+            </div>
           </div>
         </>
       )}

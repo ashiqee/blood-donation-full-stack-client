@@ -1,39 +1,37 @@
 import { Autocomplete, TextField } from "@mui/material";
 
-
-
 const OptionAll = ({ data, label, name }) => {
+  const isOptionEqualToValue = (option, value) => {
+    return option?.id === value?.id;
+  };
+  return (
+    <Autocomplete
+      id={name}
+      // sx={{ width: 300 }}
+      options={data}
+      autoHighlight
+      getOptionLabel={(option) => option.name}
+      isOptionEqualToValue={isOptionEqualToValue}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label={label}
+          name={name}
+          inputProps={{
+            ...params.inputProps,
 
-
-    const isOptionEqualToValue = (option, value) => {
-        return option?.id === value?.id
-
-    }
-    return (
-        <Autocomplete
-            id={name}
-            // sx={{ width: 300 }}
-            options={data}
-
-            autoHighlight
-            getOptionLabel={(option) => option.name}
-
-            isOptionEqualToValue={isOptionEqualToValue}
-            renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label={label}
-                    name={name}
-                    inputProps={{
-                        ...params.inputProps,
-
-                        // autoComplete: '', // disable autocomplete and autofill
-                    }}
-
-                />
-            )}
+            // autoComplete: '', // disable autocomplete and autofill
+          }}
         />
-    );
+      )}
+      sx={{
+        "& .MuiAutocomplete-popupIndicator": {
+          zIndex: 10,
+          display: "relative",
+        },
+      }}
+    />
+  );
 };
 
 export default OptionAll;

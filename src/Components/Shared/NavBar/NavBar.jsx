@@ -16,15 +16,14 @@ import useAuth from "../../../hooks/useAuth";
 import { Link, NavLink } from "react-router-dom";
 import { BloodtypeSharp } from "@mui/icons-material";
 
-
 const pages = [
-  { name: "home", path: "/" },
+  { name: "Home", path: "/" },
   { name: "Donation Request", path: "/donationRequest" },
   { name: "Blog", path: "/blog" },
 ];
 
 const settings = [
-  { name: "Profile", path: "/profile" },
+  { name: "Profile", path: "/dashboard/profile" },
   { name: "Account", path: "/account" },
   { name: "Dashboard", path: "/dashboard" },
 ];
@@ -101,7 +100,7 @@ function NavBar() {
       position="static"
       sx={{
         background: "transparent",
-        bgcolor: '#f34334',
+        bgcolor: "#f34334",
         opacity: "50px",
       }}
     >
@@ -136,7 +135,11 @@ function NavBar() {
                 textDecoration: "none",
               }}
             >
-              Blood <br /><span className="text-sm ml-2 relative -top-1 right-5" > Donation</span>
+              Blood <br />
+              <span className="text-sm ml-2 relative -top-1 right-5">
+                {" "}
+                Donation
+              </span>
             </Typography>
           </Link>
 
@@ -178,7 +181,7 @@ function NavBar() {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <BloodtypeSharp sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
@@ -188,14 +191,18 @@ function NavBar() {
               mr: 2,
               display: { xs: "flex", md: "none" },
               flexGrow: 1,
-
+              py: 4,
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            Blood Donation
+            Blood <br />
+            <span className="text-sm ml-2 relative -top-1 right-3">
+              {" "}
+              Donation
+            </span>
           </Typography>
           <Box
             sx={{
@@ -221,8 +228,13 @@ function NavBar() {
               <NavLink to="/login">
                 <Button
                   variant="contained"
-
-                  sx={{ fontSize: "16px", bgcolor: "white", color: 'primary.main', fontWeight: "600", mr: "20px" }}
+                  sx={{
+                    fontSize: "16px",
+                    bgcolor: "white",
+                    color: "primary.main",
+                    fontWeight: "600",
+                    mr: "20px",
+                  }}
                 >
                   Login
                 </Button>{" "}
@@ -230,7 +242,12 @@ function NavBar() {
               <NavLink to="/signUp">
                 <Button
                   variant="contained"
-                  sx={{ fontSize: "16px", bgcolor: "white", color: 'primary.main', fontWeight: "600" }}
+                  sx={{
+                    fontSize: "16px",
+                    bgcolor: "white",
+                    color: "primary.main",
+                    fontWeight: "600",
+                  }}
                 >
                   Registration
                 </Button>{" "}
