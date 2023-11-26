@@ -4,24 +4,17 @@ import ProfileModal from "./ProfileEdit/ProfileModal";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import useSingleUserData from "../../../hooks/useSingleUserData";
 
 const Profile = () => {
 
   const { user, loading } = useAuth()
 
-  const axiosSecure = useAxiosSecure()
+  const [userInfo, isUserLoading, refetch] = useSingleUserData()
 
 
 
-  const { data: userInfo, isPending: isUserLoading, refetch } = useQuery({
-    queryKey: ['user'],
-    enabled: !loading,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/user/${user?.email}`)
-      console.log(res.data);
-      return res.data;
-    }
-  })
+
 
 
 
@@ -59,7 +52,7 @@ const Profile = () => {
         </div>
 
         <div className="md:flex flex-wrap md:relative mr-10   mt-14">
-          <ProfileModal text={"Edit Profile"} userData={userInfo} refetch={refetch} />
+          <ProfileModal userData={userInfo} isUserLoading={isUserLoading} refetch={refetch} />
         </div>
       </div>
       <div className="relative container mx-auto h-[400px] mt-20 mb-28 -bottom-20 md:w-2/3">

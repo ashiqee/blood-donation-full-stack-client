@@ -13,9 +13,9 @@ import Swal from "sweetalert2";
 const image_hosting = import.meta.env.VITE_IMAGE_HOST;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting}`;
 
-const ProfileModal = (userData, refetch) => {
+const ProfileModal = ({ userData, isUserLoading, refetch }) => {
   const axiosSecure = useAxiosSecure()
-  const { blood, _id, districts: district, upuzilla, name, profileImg, coverImg } = userData;
+
 
   const [open, setOpen] = useState(false);
   const [districts, handleDistricts, upuzzila] = useDistricts();
@@ -23,6 +23,11 @@ const ProfileModal = (userData, refetch) => {
   const [coverImage, setCoverImage] = useState("");
 
   const cancelButtonRef = useRef(null);
+
+  if (isUserLoading) {
+    return <>Loading..........</>
+  }
+  const { blood, _id, districts: district, upuzilla, name, profileImg, coverImg } = userData;
 
   const bloodGroup = [
     { id: 1, name: "A+" },

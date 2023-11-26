@@ -15,6 +15,7 @@ import MenuItem from "@mui/material/MenuItem";
 import useAuth from "../../../hooks/useAuth";
 import { Link, NavLink } from "react-router-dom";
 import { BloodtypeSharp } from "@mui/icons-material";
+import JoinAsDonor from "../../JoinAsDonor/JoinAsDonor";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -90,6 +91,9 @@ function NavBar() {
           >
             Blog
           </NavLink>
+        </li>
+        <li>
+          <JoinAsDonor />
         </li>
       </ul>
     </>
