@@ -27,12 +27,12 @@ import {
 import { Divider, useMediaQuery } from "@mui/material";
 import useDonor from "../../../hooks/useDonor";
 import useAdmin from "../../../hooks/useAdmin";
+import useVolunteer from "../../../hooks/useVolunteer";
 
 const SideBar = () => {
   const [isDonor] = useDonor();
   const [isAdmin, isAdminLoading] = useAdmin();
-
-  const isVolunteer = false;
+  const [isVolunteer, isVolunteerLoading] = useVolunteer();
 
   const [isOpen, setIsOpen] = useState(true);
   const isSmallSecreen = useMediaQuery("(max-width:600px");
@@ -62,6 +62,7 @@ const SideBar = () => {
               <Typography variant="h5">
                 <div className="flex gap-4">
                   <h2 className="text-2xl text-pink-400 ">Blood Donation</h2>
+
                   <button onClick={() => setIsOpen(!isOpen)}>
                     {" "}
                     <RiMenuFoldFill className="h-5 w-5" />
@@ -78,12 +79,10 @@ const SideBar = () => {
                   Dashboard
                 </ListItem>
               </NavLink>
-
               {/* admin condition  */}
-
               {isAdmin && (
                 <>
-                  <NavLink to="/dashboard/usersManage">
+                  <NavLink to="/dashboard/all-users">
                     <ListItem>
                       <ListItemPrefix>
                         <RiUserShared2Line className="h-5 w-5" />
@@ -93,33 +92,67 @@ const SideBar = () => {
                   </NavLink>
                 </>
               )}
-
+              {/* Volunteer menu  */}
               {(isAdmin || isVolunteer) && (
-                <NavLink to="/dashboard/AllDonationReq">
-                  <ListItem>
-                    <ListItemPrefix>
-                      <BloodtypeSharp className="h-5 w-5" />
-                    </ListItemPrefix>
-                    All Donation requests
-                    <ListItemSuffix>
-                      <Chip
-                        value="14"
-                        size="sm"
-                        variant="ghost"
-                        color="blue-gray"
-                        className="rounded-full"
-                      />
-                    </ListItemSuffix>
-                  </ListItem>
-                </NavLink>
+                <>
+                  <NavLink to="/dashboard/all-donation-request">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <BloodtypeSharp className="h-5 w-5" />
+                      </ListItemPrefix>
+                      All Donation requests
+                      <ListItemSuffix>
+                        <Chip
+                          value="14"
+                          size="sm"
+                          variant="ghost"
+                          color="blue-gray"
+                          className="rounded-full"
+                        />
+                      </ListItemSuffix>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dashboard/content-management">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <Inbox className="h-5 w-5" />
+                      </ListItemPrefix>
+                      Content management
+                    </ListItem>
+                  </NavLink>
+                </>
               )}
+              {/* Donor menu  */}
 
-              <ListItem>
-                <ListItemPrefix>
-                  <Inbox className="h-5 w-5" />
-                </ListItemPrefix>
-                Content management
-              </ListItem>
+              {isDonor && (
+                <>
+                  <NavLink to="/dashboard/my-donation-request">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <BloodtypeSharp className="h-5 w-5" />
+                      </ListItemPrefix>
+                      My Donation requests
+                      <ListItemSuffix>
+                        <Chip
+                          value="14"
+                          size="sm"
+                          variant="ghost"
+                          color="blue-gray"
+                          className="rounded-full"
+                        />
+                      </ListItemSuffix>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dashboard/create-donation-request">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <Inbox className="h-5 w-5" />
+                      </ListItemPrefix>
+                      Create Donation Request
+                    </ListItem>
+                  </NavLink>
+                </>
+              )}
 
               <Divider />
               {/* shared menu  */}
@@ -165,25 +198,78 @@ const SideBar = () => {
                   </ListItemPrefix>
                 </ListItem>
               </NavLink>
-              <NavLink to="/users">
-                <ListItem>
-                  <ListItemPrefix>
-                    <RiUserStarFill className="h-5 w-5" />
-                  </ListItemPrefix>
-                </ListItem>
-              </NavLink>
-              <ListItem>
-                <ListItemPrefix>
-                  <BloodtypeSharp className="h-5 w-5" />
-                </ListItemPrefix>
 
-                <ListItemSuffix></ListItemSuffix>
-              </ListItem>
-              <ListItem>
-                <ListItemPrefix>
-                  <Inbox className="h-5 w-5" />
-                </ListItemPrefix>
-              </ListItem>
+              {/* admin condition  */}
+              {isAdmin && (
+                <>
+                  <NavLink to="/dashboard/all-users">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <RiUserShared2Line className="h-5 w-5" />
+                      </ListItemPrefix>
+                    </ListItem>
+                  </NavLink>
+                </>
+              )}
+              {/* Volunteer menu  */}
+              {(isAdmin || isVolunteer) && (
+                <>
+                  <NavLink to="/dashboard/all-donation-request">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <BloodtypeSharp className="h-5 w-5" />
+                      </ListItemPrefix>
+
+                      <ListItemSuffix>
+                        <Chip
+                          value="14"
+                          size="sm"
+                          variant="ghost"
+                          color="blue-gray"
+                          className="rounded-full hidden"
+                        />
+                      </ListItemSuffix>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dashboard/content-management">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <Inbox className="h-5 w-5" />
+                      </ListItemPrefix>
+                    </ListItem>
+                  </NavLink>
+                </>
+              )}
+              {/* Donor menu  */}
+
+              {isDonor && (
+                <>
+                  <NavLink to="/dashboard/my-donation-request">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <BloodtypeSharp className="h-5 w-5" />
+                      </ListItemPrefix>
+
+                      <ListItemSuffix>
+                        <Chip
+                          value="14"
+                          size="sm"
+                          variant="ghost"
+                          color="blue-gray"
+                          className="rounded-full"
+                        />
+                      </ListItemSuffix>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dashboard/content-management">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <Inbox className="h-5 w-5" />
+                      </ListItemPrefix>
+                    </ListItem>
+                  </NavLink>
+                </>
+              )}
 
               <Divider />
               {/* shared menu  */}
