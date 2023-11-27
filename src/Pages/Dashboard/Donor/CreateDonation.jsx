@@ -6,12 +6,17 @@ import useAuth from "../../../hooks/useAuth";
 import useDistricts from "../../../hooks/useDistricts";
 
 import useSingleUserData from "../../../hooks/useSingleUserData";
+import useAxiosSecure from './../../../hooks/useAxiosSecure';
+import Swal from "sweetalert2";
+import { useEffect } from "react";
+
 
 const CreateDonation = () => {
   const { user } = useAuth();
   const [districts, handleDistricts, upuzzila] = useDistricts();
 
   const [userInfo, isUserLoading, refetch] = useSingleUserData();
+  const axiosSecure = useAxiosSecure()
 
   const bloodGroup = [
     { id: 1, name: "A+" },
@@ -24,42 +29,104 @@ const CreateDonation = () => {
     { id: 8, name: "O-" },
   ];
 
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
+
+
+    if (userInfo?.status === "Blocked") {
+      return <>
+        {Swal.fire({
+          title: `You Status Blocked!`,
+          text: "can not donation request",
+          icon: 'error',
+          position: 'center',
+          timer: 1500
+        })}
+      </>
+    }
+
+
+    const donationReqData = {
+      requesterName: user?.displayName,
+      requesterEmail: user?.email,
+      recipientName: data.get("recipientName"),
+      blood: userInfo?.blood,
+      districts: data.get("districts"),
+      upuzlia: data.get("upuzlia"),
+      hospitalInfo: data.get("hospitalInfo"),
+      donorReqAddress: data.get("donorReqAddress"),
+      donateDate: data.get("donateDate"),
+      donateTime: data.get("donateTime"),
+      reqMessage: data.get("reqMessage"),
+      donationStatus: "pending"
+    };
+
+    await axiosSecure.post(`/donationReqs`, donationReqData)
+      .then(res => {
+        console.log(res.data)
+
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            title: `Donation request submit Successfully!`,
+            icon: 'success',
+            position: 'center',
+            timer: 1500
+          })
+
+
+        } else {
+          Swal.fire({
+            title: `Donation request submit unsuccessfull!`,
+            icon: 'error',
+            position: 'center',
+            timer: 1500
+          })
+        }
+
+      })
+
+
+
+
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="container mb-14 mx-auto">
       <Box component="form" onSubmit={handleSubmit}>
         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
           <h2 className="text-3xl mb-5 text-center">Create Donation Request</h2>
+          {userInfo?.status === 'Blocked' ? <> <h4 className="px-4 text-red-900"> Your status now {userInfo?.status} </h4></> : <></>}
           <div className="flex-col space-y-4 my-auto items-center justify-center  p-5 gap-5">
             <div className="md:flex gap-5">
               <div className="w-full">
                 <InputLabel>Requester name</InputLabel>
                 <TextField
                   type="text"
-                  id="name"
-                  name="name"
+                  id="requesterName"
+                  name="requesterName"
                   value={userInfo?.name}
                   defaultValue={userInfo?.name}
                   disabled
-                  autoComplete="name"
+
                   className="font-bold w-full text-black"
                 />
               </div>
               <div className="w-full">
                 <InputLabel>Requester Email</InputLabel>
                 <TextField
-                  type="text"
-                  id="email"
-                  name="email"
+                  type="email"
+                  id="requesterEmail"
+                  name="requesterEmail"
                   value={userInfo?.email}
                   defaultValue={userInfo?.name}
                   disabled
                   className="w-full"
-                  autoComplete="name"
+
                 />
               </div>
               <div className="w-full">
@@ -73,17 +140,18 @@ const CreateDonation = () => {
                 />
               </div>
               {/* Blood  */}
-              {/* <div className="w-full">
+              <div className="w-full">
+                <InputLabel>Blood Group</InputLabel>
                 <TextField
                   type="text"
                   id="blood"
                   name="blood"
-                  label="Blood Group"
                   defaultValue={userInfo?.blood}
                   autoComplete="name"
+                  className="w-full"
                   disabled
                 />
-              </div> */}
+              </div>
             </div>
 
             <div className="flex gap-5">
@@ -115,8 +183,8 @@ const CreateDonation = () => {
                 <TextField
                   className="w-full"
                   type="text"
-                  id="address"
-                  name="address"
+                  id="hospitalInfo"
+                  name="hospitalInfo"
                   placeholder="Like Dhaka Medical College Hospital"
                 />
               </div>
@@ -128,8 +196,8 @@ const CreateDonation = () => {
                 <TextField
                   className="w-full"
                   type="text"
-                  id="address"
-                  name="address"
+                  id="donorReqAddress"
+                  name="donorReqAddress"
                   placeholder="Zahir Raihan Rd,Dhaka"
                 />
               </div>
@@ -170,12 +238,24 @@ const CreateDonation = () => {
         </div>
 
         <div className=" sm:flex sm:flex-row-reverse sm:px-6">
-          <button
-            type="submit"
-            className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-          >
-            Create Donation Request
-          </button>
+          {
+            userInfo?.status === 'Blocked' ? <>
+              <button
+                disabled
+                type="submit"
+                className="  inline-flex w-full justify-center rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  sm:ml-3 sm:w-auto"
+              >
+                Create Donation Request
+              </button>
+            </> : <>
+              <button
+
+                type="submit"
+                className="  inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+              >
+                Create Donation Request
+              </button></>
+          }
         </div>
       </Box>
     </div>
