@@ -25,8 +25,15 @@ import {
   PowerOff,
 } from "@mui/icons-material";
 import { Divider, useMediaQuery } from "@mui/material";
+import useDonor from "../../../hooks/useDonor";
+import useAdmin from "../../../hooks/useAdmin";
 
 const SideBar = () => {
+  const [isDonor] = useDonor();
+  const [isAdmin, isAdminLoading] = useAdmin();
+
+  const isVolunteer = false;
+
   const [isOpen, setIsOpen] = useState(true);
   const isSmallSecreen = useMediaQuery("(max-width:600px");
 
@@ -37,6 +44,11 @@ const SideBar = () => {
       setIsOpen(true);
     }
   }, [isSmallSecreen]);
+
+  if (isAdminLoading) {
+    return <> Loading....</>;
+  }
+
   return (
     <div className="min-h-screen shadow-xl bg-gradient-to-r from-pink-50 to-orange-50 shadow-blue-gray-900/50">
       {isOpen ? (
@@ -66,29 +78,42 @@ const SideBar = () => {
                   Dashboard
                 </ListItem>
               </NavLink>
-              <NavLink to="/dashboard/usersManage">
-                <ListItem>
-                  <ListItemPrefix>
-                    <RiUserShared2Line className="h-5 w-5" />
-                  </ListItemPrefix>
-                  User Manage
-                </ListItem>
-              </NavLink>
-              <ListItem>
-                <ListItemPrefix>
-                  <BloodtypeSharp className="h-5 w-5" />
-                </ListItemPrefix>
-                Donation requests
-                <ListItemSuffix>
-                  <Chip
-                    value="14"
-                    size="sm"
-                    variant="ghost"
-                    color="blue-gray"
-                    className="rounded-full"
-                  />
-                </ListItemSuffix>
-              </ListItem>
+
+              {/* admin condition  */}
+
+              {isAdmin && (
+                <>
+                  <NavLink to="/dashboard/usersManage">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <RiUserShared2Line className="h-5 w-5" />
+                      </ListItemPrefix>
+                      User Manage
+                    </ListItem>
+                  </NavLink>
+                </>
+              )}
+
+              {(isAdmin || isVolunteer) && (
+                <NavLink to="/dashboard/AllDonationReq">
+                  <ListItem>
+                    <ListItemPrefix>
+                      <BloodtypeSharp className="h-5 w-5" />
+                    </ListItemPrefix>
+                    All Donation requests
+                    <ListItemSuffix>
+                      <Chip
+                        value="14"
+                        size="sm"
+                        variant="ghost"
+                        color="blue-gray"
+                        className="rounded-full"
+                      />
+                    </ListItemSuffix>
+                  </ListItem>
+                </NavLink>
+              )}
+
               <ListItem>
                 <ListItemPrefix>
                   <Inbox className="h-5 w-5" />

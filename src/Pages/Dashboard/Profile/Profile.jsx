@@ -7,22 +7,9 @@ import { useQuery } from "@tanstack/react-query";
 import useSingleUserData from "../../../hooks/useSingleUserData";
 
 const Profile = () => {
+  const { user, loading } = useAuth();
 
-  const { user, loading } = useAuth()
-
-  const [userInfo, isUserLoading, refetch] = useSingleUserData()
-
-
-
-
-
-
-
-
-
-
-
-
+  const [userInfo, isUserLoading, refetch] = useSingleUserData();
 
   const profileImg = user?.photoURL;
 
@@ -32,7 +19,11 @@ const Profile = () => {
 
       <div className="   min-w-[calc(100vw-290px)]   ">
         <div className="relative  w-full overflow-hidden">
-          <img className="w-full object-cover h-96 " src={userInfo?.coverImg} alt="" />
+          <img
+            className="w-full object-cover h-96 "
+            src={userInfo?.coverImg}
+            alt=""
+          />
         </div>
         <br />
       </div>
@@ -46,17 +37,26 @@ const Profile = () => {
             />
             <div className="">
               <h2 className="text-2xl">Name: {user?.displayName} </h2>
-              <p>email: {user?.email}</p>
+              <p>Email: {user?.email}</p>
+              <p>Role: {userInfo?.role}</p>
             </div>
           </div>
         </div>
 
         <div className="md:flex flex-wrap md:relative mr-10   mt-14">
-          <ProfileModal userData={userInfo} isUserLoading={isUserLoading} refetch={refetch} />
+          <ProfileModal
+            userData={userInfo}
+            isUserLoading={isUserLoading}
+            refetch={refetch}
+          />
         </div>
       </div>
       <div className="relative container mx-auto h-[400px] mt-20 mb-28 -bottom-20 md:w-2/3">
-        <TabsWithIcon blood={userInfo?.blood} districts={userInfo?.districts} upuzilla={userInfo?.upuzilla} />
+        <TabsWithIcon
+          blood={userInfo?.blood}
+          districts={userInfo?.districts}
+          upuzilla={userInfo?.upuzilla}
+        />
       </div>
     </div>
   );

@@ -90,7 +90,7 @@ const SignUp = () => {
         timer: 1500,
       });
 
-      return
+      return;
     }
     if (name === "") {
       Swal.fire({
@@ -101,9 +101,8 @@ const SignUp = () => {
         timer: 1500,
       });
 
-      return
-    } else if (password === '' || password.length < 6) {
-
+      return;
+    } else if (password === "" || password.length < 6) {
       Swal.fire({
         position: "center",
         icon: "error",
@@ -112,8 +111,8 @@ const SignUp = () => {
         timer: 1500,
       });
 
-      return
-    } else if (blood === '') {
+      return;
+    } else if (blood === "") {
       Swal.fire({
         position: "center",
         icon: "error",
@@ -123,8 +122,7 @@ const SignUp = () => {
       });
 
       return;
-    }
-    else if (districts === '') {
+    } else if (districts === "") {
       Swal.fire({
         position: "center",
         icon: "error",
@@ -134,8 +132,7 @@ const SignUp = () => {
       });
 
       return;
-    }
-    else if (upuzilla === '') {
+    } else if (upuzilla === "") {
       Swal.fire({
         position: "center",
         icon: "error",
@@ -147,9 +144,8 @@ const SignUp = () => {
       return;
     }
 
-
-    const defaultCoverImg = 'https://images.pexels.com/photos/12227661/pexels-photo-12227661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
-
+    const defaultCoverImg =
+      "https://images.pexels.com/photos/12227661/pexels-photo-12227661.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
     const userInfo = {
       name: name,
@@ -159,14 +155,15 @@ const SignUp = () => {
       blood: blood,
       districts: districts,
       upuzilla: upuzilla,
-      role: 'guest',
-      status: "active",
+      role: "Guest",
+
+      status: "Active",
     };
 
-    // Test code 
+    // Test code
     // if (userInfo) {
     //   console.log(userInfo);
-    //   return
+    //   return;
     // }
 
     createUser(email, password).then((result) => {
@@ -181,7 +178,7 @@ const SignUp = () => {
     //  SEND DB
 
     const userRegInfo = await axiosPublic.post("/user", userInfo);
-    if (userRegInfo.data.insertedId);
+    if (userRegInfo?.data.insertedId);
     {
       Swal.fire({
         position: "center",
@@ -319,7 +316,6 @@ const SignUp = () => {
                   id="password"
                   label="passwrod"
                   name="password"
-
                   autoComplete="current-password"
                 />
               </Grid>
