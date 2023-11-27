@@ -17,7 +17,7 @@ import {
   Avatar,
 } from "@material-tailwind/react";
 import Modal from "./Modal";
-import { async } from "@firebase/util";
+
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import useSingleUserData from "./../../../hooks/useSingleUserData";
@@ -254,7 +254,7 @@ const AllUsers = () => {
                           ) : (
                             <>
                               {roleStatus ===
-                              "pending request for volunteer" ? (
+                                "pending request for volunteer" ? (
                                 <></>
                               ) : (
                                 <>
@@ -284,7 +284,7 @@ const AllUsers = () => {
                           ) : (
                             <>
                               {roleStatus === "Approved" &&
-                              role === "Volunteer" ? (
+                                role === "Volunteer" ? (
                                 <>
                                   <h2 className="p-3 text-white w-24 rounded-md bg-[#B31312]">
                                     Approved

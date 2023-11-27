@@ -13,7 +13,7 @@ import {
   RiMenuUnfoldFill,
   RiUser2Fill,
   RiUserShared2Line,
-  RiUserStarFill,
+
 } from "react-icons/ri";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -24,12 +24,14 @@ import {
   Inbox,
   PowerOff,
 } from "@mui/icons-material";
-import { Divider, useMediaQuery } from "@mui/material";
+import { Button, Divider, useMediaQuery } from "@mui/material";
 import useDonor from "../../../hooks/useDonor";
 import useAdmin from "../../../hooks/useAdmin";
 import useVolunteer from "../../../hooks/useVolunteer";
+import useAuth from "../../../hooks/useAuth";
 
 const SideBar = () => {
+  const { user, logOut } = useAuth()
   const [isDonor] = useDonor();
   const [isAdmin, isAdminLoading] = useAdmin();
   const [isVolunteer, isVolunteerLoading] = useVolunteer();
@@ -61,6 +63,7 @@ const SideBar = () => {
             <div className="mb-2 p-4">
               <Typography variant="h5">
                 <div className="flex gap-4">
+
                   <h2 className="text-2xl text-pink-400 ">Blood Donation</h2>
 
                   <button onClick={() => setIsOpen(!isOpen)}>
@@ -69,6 +72,9 @@ const SideBar = () => {
                   </button>
                 </div>
               </Typography>
+              <img className="w-20 h-20 p-2 rounded-full" src={user?.photoURL} alt="" />
+              <h2>{user?.displayName}</h2>
+              <Divider />
             </div>
             <List>
               <NavLink to="/dashboard">
@@ -174,9 +180,15 @@ const SideBar = () => {
               </NavLink>
               <ListItem>
                 <ListItemPrefix>
-                  <PowerOff className="h-5 w-5" />
+                  <Button
+                    onClick={() => logOut()}
+                    variant="outlined"
+                    sx={{ fontSize: "16px", fontWeight: "200" }}
+                  >
+                    <PowerOff className="h-5 w-5" />  LogOut
+                  </Button>
                 </ListItemPrefix>
-                Log Out
+
               </ListItem>
             </List>
           </Card>
@@ -251,13 +263,13 @@ const SideBar = () => {
                       </ListItemPrefix>
 
                       <ListItemSuffix>
-                        <Chip
+                        {/* <Chip
                           value="14"
                           size="sm"
                           variant="ghost"
                           color="blue-gray"
                           className="rounded-full"
-                        />
+                        /> */}
                       </ListItemSuffix>
                     </ListItem>
                   </NavLink>
@@ -289,7 +301,8 @@ const SideBar = () => {
               </NavLink>
               <ListItem>
                 <ListItemPrefix>
-                  <PowerOff className="h-5 w-5" />
+                  <PowerOff onClick={() => logOut()} className="h-5 w-5" />
+
                 </ListItemPrefix>
               </ListItem>
             </div>
