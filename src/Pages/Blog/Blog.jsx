@@ -1,8 +1,14 @@
-import ProfileModal from "../Dashboard/Profile/ProfileEdit/ProfileModal";
-import Modal from "../Dashboard/Profile/ProfileEdit/ProfileModal";
+import useBlogData from "../../hooks/useBlogData";
 
 const Blog = () => {
-  return <div>Blog Post</div>;
+  const { blogData, isBlogDataLoading, refetch } = useBlogData(null);
+
+  return (
+    <div>
+      {blogData?.length}
+      Blog Post
+    </div>
+  );
 };
 
 export default Blog;

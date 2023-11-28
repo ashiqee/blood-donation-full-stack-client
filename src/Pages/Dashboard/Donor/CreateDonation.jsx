@@ -6,17 +6,16 @@ import useAuth from "../../../hooks/useAuth";
 import useDistricts from "../../../hooks/useDistricts";
 
 import useSingleUserData from "../../../hooks/useSingleUserData";
-import useAxiosSecure from './../../../hooks/useAxiosSecure';
+import useAxiosSecure from "./../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useEffect } from "react";
-
 
 const CreateDonation = () => {
   const { user } = useAuth();
   const [districts, handleDistricts, upuzzila] = useDistricts();
 
   const [userInfo, isUserLoading, refetch] = useSingleUserData();
-  const axiosSecure = useAxiosSecure()
+  const axiosSecure = useAxiosSecure();
 
   const bloodGroup = [
     { id: 1, name: "A+" },
@@ -29,27 +28,23 @@ const CreateDonation = () => {
     { id: 8, name: "O-" },
   ];
 
-
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
 
-
     if (userInfo?.status === "Blocked") {
-      return <>
-        {Swal.fire({
-          title: `You Status Blocked!`,
-          text: "can not donation request",
-          icon: 'error',
-          position: 'center',
-          timer: 1500
-        })}
-      </>
+      return (
+        <>
+          {Swal.fire({
+            title: `You Status Blocked!`,
+            text: "can not donation request",
+            icon: "error",
+            position: "center",
+            timer: 1500,
+          })}
+        </>
+      );
     }
-
 
     const donationReqData = {
       requesterName: user?.displayName,
@@ -63,36 +58,28 @@ const CreateDonation = () => {
       donateDate: data.get("donateDate"),
       donateTime: data.get("donateTime"),
       reqMessage: data.get("reqMessage"),
-      donationStatus: "pending"
+      donationStatus: "pending",
     };
 
-    await axiosSecure.post(`/donationReqs`, donationReqData)
-      .then(res => {
-        console.log(res.data)
+    await axiosSecure.post(`/donationReqs`, donationReqData).then((res) => {
+      console.log(res.data);
 
-        if (res.data.modifiedCount > 0) {
-          Swal.fire({
-            title: `Donation request submit Successfully!`,
-            icon: 'success',
-            position: 'center',
-            timer: 1500
-          })
-
-
-        } else {
-          Swal.fire({
-            title: `Donation request submit unsuccessfull!`,
-            icon: 'error',
-            position: 'center',
-            timer: 1500
-          })
-        }
-
-      })
-
-
-
-
+      if (res.data > 0) {
+        Swal.fire({
+          title: `Donation request submit Successfully!`,
+          icon: "success",
+          position: "center",
+          timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          title: `Donation request submit Successfully!`,
+          icon: "success",
+          position: "center",
+          timer: 1500,
+        });
+      }
+    });
   };
 
   return (
@@ -100,7 +87,17 @@ const CreateDonation = () => {
       <Box component="form" onSubmit={handleSubmit}>
         <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
           <h2 className="text-3xl mb-5 text-center">Create Donation Request</h2>
-          {userInfo?.status === 'Blocked' ? <> <h4 className="px-4 text-red-900"> Your status now {userInfo?.status} </h4></> : <></>}
+          {userInfo?.status === "Blocked" ? (
+            <>
+              {" "}
+              <h4 className="px-4 text-red-900">
+                {" "}
+                Your status now {userInfo?.status}{" "}
+              </h4>
+            </>
+          ) : (
+            <></>
+          )}
           <div className="flex-col space-y-4 my-auto items-center justify-center  p-5 gap-5">
             <div className="md:flex gap-5">
               <div className="w-full">
@@ -112,7 +109,6 @@ const CreateDonation = () => {
                   value={userInfo?.name}
                   defaultValue={userInfo?.name}
                   disabled
-
                   className="font-bold w-full text-black"
                 />
               </div>
@@ -126,7 +122,6 @@ const CreateDonation = () => {
                   defaultValue={userInfo?.name}
                   disabled
                   className="w-full"
-
                 />
               </div>
               <div className="w-full">
@@ -238,8 +233,8 @@ const CreateDonation = () => {
         </div>
 
         <div className=" sm:flex sm:flex-row-reverse sm:px-6">
-          {
-            userInfo?.status === 'Blocked' ? <>
+          {userInfo?.status === "Blocked" ? (
+            <>
               <button
                 disabled
                 type="submit"
@@ -247,15 +242,17 @@ const CreateDonation = () => {
               >
                 Create Donation Request
               </button>
-            </> : <>
+            </>
+          ) : (
+            <>
               <button
-
                 type="submit"
                 className="  inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 Create Donation Request
-              </button></>
-          }
+              </button>
+            </>
+          )}
         </div>
       </Box>
     </div>

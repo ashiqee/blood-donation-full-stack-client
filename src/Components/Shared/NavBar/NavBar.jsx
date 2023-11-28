@@ -140,7 +140,7 @@ function NavBar() {
               }}
             >
               Blood <br />
-              <span className="text-sm ml-2 relative -top-1 right-5">
+              <span className="text-sm ml-2 relative -bottom-12 -left-[83px]">
                 {" "}
                 Donation
               </span>
