@@ -20,6 +20,7 @@ import { Delete, DetailsSharp, Edit } from "@mui/icons-material";
 // import Swal from "sweetalert2";
 // import useSingleUserData from "./../../../hooks/useSingleUserData";
 import { red } from "@mui/material/colors";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const TABS = [
@@ -54,14 +55,29 @@ const TABLE_HEAD = [
   "Action",
   "Details",
 ];
-const TableDonorReqs = ({ data }) => {
+const TableDonorReqs = ({ data, loading, refetch }) => {
+
+  const [displayData, setDisplayData] = useState(data)
+
+  const handleTabSort = (value) => {
+
+    if (value === "all") {
+      refetch()
+      return setDisplayData(data)
+    }
+    const filterData = data.filter((req) => req?.donationStatus === value)
+    setDisplayData(filterData)
+
+  };
+
+
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              Donation Requests page
+              All Blood Donation Requests page
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
               See information about all donations requests
@@ -79,8 +95,8 @@ const TableDonorReqs = ({ data }) => {
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <Tabs value="all" className="w-full z-0 md:w-max">
             <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
+              {TABS.map(({ label, value, i }) => (
+                <Tab onClick={() => handleTabSort(value)} key={i} value={value}>
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
@@ -98,9 +114,9 @@ const TableDonorReqs = ({ data }) => {
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-              {TABLE_HEAD.map((head) => (
+              {TABLE_HEAD.map((head, i) => (
                 <th
-                  key={head}
+                  key={i}
                   className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                 >
                   <Typography
@@ -116,7 +132,7 @@ const TableDonorReqs = ({ data }) => {
           </thead>
           <tbody>
             {/* {data?.slice(0, 3).map( */}
-            {data?.map(
+            {displayData?.map(
               (
                 {
                   _id,
@@ -137,7 +153,7 @@ const TableDonorReqs = ({ data }) => {
                 },
                 index
               ) => {
-                const isLast = index === data?.length - 1;
+                const isLast = index === displayData?.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";

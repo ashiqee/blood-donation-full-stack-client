@@ -24,31 +24,40 @@ import { red } from '@mui/material/colors';
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 const TABS = [
   {
+    id: 1,
     label: "All",
     value: "all",
   },
   {
+    id: 2,
     label: "Pending",
     value: "pending",
   },
   {
+    id: 3,
     label: "Inprogress",
     value: "inprogress",
   },
   {
+    id: 4,
     label: "Done",
     value: "done",
   },
   {
+    id: 5,
     label: "Cancel",
     value: "cancel",
   },
 ];
 
 const TABLE_HEAD = [
+  "#",
   "Recipient name",
   "Recipient Location",
   "Donation Date & time",
@@ -68,17 +77,79 @@ const MyDonationRequests = () => {
   const { user, loading } = useAuth()
   const axiosSecure = useAxiosSecure()
 
-  const { data: data, isPending: isUserLoading, refetch } = useQuery({
+
+  const { data: DonorData, isPending: isUserDonationLoading, refetch } = useQuery({
     queryKey: ['userDonations'],
     enabled: !loading,
     queryFn: async () => {
       const res = await axiosSecure.get(`/donationsReqs/${user?.email}`)
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     }
   })
+  const [displayData, setDisplayData] = useState(DonorData)
 
 
+
+  const handleTabSort = (value) => {
+
+    if (value === "all") {
+      refetch()
+      return setDisplayData(DonorData)
+    }
+    const filterData = DonorData.filter((req) => req?.donationStatus === value)
+    setDisplayData(filterData)
+
+  };
+
+  if (isUserDonationLoading) {
+    return <>Loading</>
+  }
+
+
+  // useEffect(() => {
+  //   refetch()
+
+  // }, [refetch])
+
+
+  const handleUpdateInProgress = async (id) => {
+
+    console.log(id);
+    await axiosSecure.patch(`/donationDone/${id}`).then((res) => {
+      console.log(res.data);
+
+      if (res.data.modifiedCount > 0) {
+        Swal.fire({
+          title: `Donor request  inprogress!`,
+
+          icon: "success",
+          position: "center",
+          timer: 1500,
+        });
+        refetch();
+      }
+    });
+
+  }
+  const handleCancel = async (id) => {
+
+
+    await axiosSecure.patch(`/donationReqInCancel/${id}`).then((res) => {
+      console.log(res.data);
+
+      if (res.data.modifiedCount > 0) {
+        Swal.fire({
+          title: `Donor request cancel!`,
+
+          icon: "success",
+          position: "center",
+          timer: 1500,
+        });
+        refetch();
+      }
+    });
+  }
 
 
   return (
@@ -87,7 +158,7 @@ const MyDonationRequests = () => {
         <div className="mb-8 flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
-              My Donation Requests page
+              My Blood Donation Requests page
             </Typography>
             <Typography color="gray" className="mt-1 font-normal">
               See information about my donations requests
@@ -105,8 +176,8 @@ const MyDonationRequests = () => {
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <Tabs value="all" className="w-full z-0 md:w-max">
             <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
+              {TABS.map(({ id, label, value }) => (
+                <Tab onClick={() => handleTabSort(value)} key={id} value={value}>
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
@@ -124,9 +195,9 @@ const MyDonationRequests = () => {
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-              {TABLE_HEAD.map((head) => (
+              {TABLE_HEAD.map((head, i) => (
                 <th
-                  key={head}
+                  key={i}
                   className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                 >
                   <Typography
@@ -141,7 +212,7 @@ const MyDonationRequests = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.slice(0, 3).map(
+            {displayData?.slice(0, 3).map(
               (
                 {
                   requesterName,
@@ -149,6 +220,7 @@ const MyDonationRequests = () => {
                   recipientName,
                   blood,
                   districts,
+                  _id,
                   upuzlia,
                   hospitalInfo,
                   donorReqAddress,
@@ -160,13 +232,28 @@ const MyDonationRequests = () => {
                 },
                 index
               ) => {
-                const isLast = index === data?.length - 1;
+                const isLast = index === displayData?.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
 
                 return (
-                  <tr key={name}>
+                  <tr key={_id}>
+                    <td className={classes}>
+                      <div className="flex items-center gap-3">
+
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {index + 1}
+                          </Typography>
+
+                        </div>
+                      </div>
+                    </td>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
 
@@ -190,11 +277,7 @@ const MyDonationRequests = () => {
                     </td>
                     <td className={classes}>
                       <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        ></Typography>
+
                         <Typography
                           variant="small"
                           color="blue-gray"
@@ -221,6 +304,7 @@ const MyDonationRequests = () => {
                     <td className={classes}>
                       {donationStatus === "pending" ? (
                         <><Button
+                          disabled
                           // onClick={() => handleUpdateAsDonor(_id)}
                           variant="outlined"
                           color="red"
@@ -235,17 +319,17 @@ const MyDonationRequests = () => {
                             <>
                               <div className="flex gap-4">
                                 <Button
-                                  // onClick={() => handleUpdateAsDonor(_id)}
-                                  variant="contained"
-                                  sx={{ bgcolor: "#B31312", color: "white" }}
+                                  onClick={() => handleUpdateInProgress(_id)}
+                                  variant="gradient"
+
                                 >
                                   {" "}
                                   Inprogress
                                 </Button>
                                 <Button
-                                  // onClick={() => handleUpdateAsDonor(_id)}
-                                  variant="contained"
-                                  sx={{ bgcolor: "#B31312", color: "white" }}
+                                  onClick={() => handleCancel(_id)}
+                                  variant="gradient"
+
                                 >
                                   {" "}
                                   Cencel
@@ -256,11 +340,13 @@ const MyDonationRequests = () => {
                             <>
                               {donationStatus ===
                                 "done" ? (
-                                <>d</>
+                                <><h2 className="p-3 text-white w-28 text-center uppercase rounded-md bg-[#B31312]">
+                                  Done
+                                </h2></>
                               ) : (
                                 <>
-                                  <h2 className="p-3 text-white w-24 rounded-md bg-[#B31312]">
-                                    Done
+                                  <h2 className="p-3 text-white uppercase w-28 text-center rounded-md bg-[#8f8686]">
+                                    Cancel
                                   </h2>
                                 </>
                               )}

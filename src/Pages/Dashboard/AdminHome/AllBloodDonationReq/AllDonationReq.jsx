@@ -8,10 +8,10 @@ const AllDonationReq = () => {
   const { donationsReqs, isDonationLoading, refetch } = useDataForAdmin()
 
 
-  console.log(donationsReqs);
 
 
-  return <TableDonorReqs data={donationsReqs} />
+
+  return <TableDonorReqs data={donationsReqs} loading={isDonationLoading} refetch={refetch} />
 
 
 };

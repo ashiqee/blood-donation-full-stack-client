@@ -139,9 +139,9 @@ const AllUsers = () => {
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
-              {TABLE_HEAD.map((head) => (
+              {TABLE_HEAD.map((head, i) => (
                 <th
-                  key={head}
+                  key={i}
                   className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
                 >
                   <Typography
@@ -178,7 +178,7 @@ const AllUsers = () => {
                   : "p-4 border-b border-blue-gray-50";
 
                 return (
-                  <tr key={name}>
+                  <tr key={_id}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
                         <Avatar src={profileImg} alt={name} size="lg" />
