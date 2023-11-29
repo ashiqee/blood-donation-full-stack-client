@@ -18,7 +18,9 @@ import CreateDonation from "../Pages/Dashboard/Donor/CreateDonation";
 
 import DonationDetails from "../Pages/Dashboard/Donation/DonationDetails";
 import AddNewBlog from "./../Pages/Dashboard/AdminHome/ContentManage/AddNewBlog";
-
+import PrivateRoutes from "./PrivateRoutes";
+import AdminRoutes from "./AdminRoutes";
+import VolunteerRoutes from "./volunteerRoutes";
 
 const router = createBrowserRouter([
   {
@@ -33,13 +35,18 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
+      //donor public
       {
         path: "donationRequest",
         element: <DonationRequest />,
       },
       {
         path: "donationDetails/:id",
-        element: <DonationDetails />,
+        element: (
+          <PrivateRoutes>
+            <DonationDetails />
+          </PrivateRoutes>
+        ),
       },
       {
         path: "searchDonors",
@@ -53,7 +60,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayOut />,
+    element: (
+      <PrivateRoutes>
+        <DashboardLayOut />
+      </PrivateRoutes>
+    ),
     children: [
       {
         path: "/dashboard",
@@ -65,15 +76,31 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/all-users",
-        element: <AllUsers />,
+        element: (
+          <AdminRoutes>
+            <AllUsers />
+          </AdminRoutes>
+        ),
       },
       {
         path: "/dashboard/all-donation-request",
-        element: <AllDonationReq />,
+        element: (
+          <AdminRoutes>
+            <VolunteerRoutes>
+              <AllDonationReq />
+            </VolunteerRoutes>
+          </AdminRoutes>
+        ),
       },
       {
         path: "/dashboard/content-management",
-        element: <ContentManage />,
+        element: (
+          <AdminRoutes>
+            <VolunteerRoutes>
+              <ContentManage />
+            </VolunteerRoutes>
+          </AdminRoutes>
+        ),
       },
       {
         path: "/dashboard/my-donation-request",
@@ -85,7 +112,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard/addBlog",
-        element: <AddNewBlog />,
+        element: (
+          <AdminRoutes>
+            <AddNewBlog />
+          </AdminRoutes>
+        ),
       },
     ],
   },

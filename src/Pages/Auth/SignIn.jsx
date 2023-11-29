@@ -1,4 +1,4 @@
-import { LockOutlined } from "@mui/icons-material";
+import { LockOutlined, Logout } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -11,12 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 
 const Login = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const { signIn } = useAuth();
+
+  const from = location.state?.from.pathname || "/";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,14 +29,31 @@ const Login = () => {
     const email = data.get("email");
     const password = data.get("password");
 
-    signIn(email, password);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Login Successfully",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+    signIn(email, password)
+      .then((result) => {
+        const user = result.user;
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Sign In Successfully",
+          text: `${user?.email}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        {
+          navigate(from, { replace: true });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Sign In fail!",
+          text: `${error?.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      });
   };
 
   return (

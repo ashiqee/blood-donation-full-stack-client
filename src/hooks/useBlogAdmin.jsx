@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
 import usePublicAxios from "./usePublicAxios";
 
-const useBlogData = () => {
+const useBlogAdmin = () => {
   const { loading } = useAuth();
   const axiosPublic = usePublicAxios();
 
@@ -13,10 +13,10 @@ const useBlogData = () => {
     isPending: isBlogDataLoading,
     refetch,
   } = useQuery({
-    queryKey: ["blogData"],
+    queryKey: ["blogDataAdmin"],
     enabled: !loading,
     queryFn: async () => {
-      const res = await axiosPublic.get(`/blogPublished`);
+      const res = await axiosPublic.get(`/blog`);
       return res.data;
     },
   });
@@ -24,4 +24,4 @@ const useBlogData = () => {
   return { blogData, isBlogDataLoading, refetch };
 };
 
-export default useBlogData;
+export default useBlogAdmin;

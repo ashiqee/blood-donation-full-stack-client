@@ -12,7 +12,6 @@ import {
   Tabs,
   TabsHeader,
   Tab,
-
 } from "@material-tailwind/react";
 import { Delete, DetailsSharp, Edit } from "@mui/icons-material";
 // import Modal from "./Modal";
@@ -20,7 +19,7 @@ import { Delete, DetailsSharp, Edit } from "@mui/icons-material";
 // import useAxiosSecure from "../../../hooks/useAxiosSecure";
 // import Swal from "sweetalert2";
 // import useSingleUserData from "./../../../hooks/useSingleUserData";
-import { red } from '@mui/material/colors';
+import { red } from "@mui/material/colors";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
@@ -67,54 +66,52 @@ const TABLE_HEAD = [
   "Details",
 ];
 
-
-
-
-
 const MyDonationRequests = () => {
+  const { user, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const [displayData, setDisplayData] = useState();
 
-
-  const { user, loading } = useAuth()
-  const axiosSecure = useAxiosSecure()
-
-
-  const { data: DonorData, isPending: isUserDonationLoading, refetch } = useQuery({
-    queryKey: ['userDonations'],
+  const {
+    data: DonorData,
+    isPending: isUserDonationLoading,
+    refetch: donorDataRefetch,
+  } = useQuery({
+    queryKey: ["userDonations"],
     enabled: !loading,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/donationsReqs/${user?.email}`)
+      const res = await axiosSecure.get(`/donationsReqs/${user?.email}`);
       // console.log(res.data);
       return res.data;
-    }
-  })
-  const [displayData, setDisplayData] = useState(DonorData)
+    },
+  });
 
-
-
-  const handleTabSort = (value) => {
-
-    if (value === "all") {
-      refetch()
-      return setDisplayData(DonorData)
-    }
-    const filterData = DonorData.filter((req) => req?.donationStatus === value)
-    setDisplayData(filterData)
-
-  };
+  useEffect(() => {
+    setDisplayData(DonorData);
+  }, [setDisplayData, loading, DonorData]);
 
   if (isUserDonationLoading) {
-    return <>Loading</>
+    return (
+      <>
+        <div className="h-screen container mx-auto flex justify-center items-center">
+          <img
+            className=""
+            src="https://cdn.dribbble.com/users/251111/screenshots/2775428/dailyui-014.gif"
+            alt=""
+          />
+        </div>
+      </>
+    );
   }
 
-
-  // useEffect(() => {
-  //   refetch()
-
-  // }, [refetch])
-
+  const handleTabSort = (value) => {
+    if (value === "all") {
+      return setDisplayData(DonorData);
+    }
+    const filterData = DonorData.filter((req) => req?.donationStatus === value);
+    setDisplayData(filterData);
+  };
 
   const handleUpdateInProgress = async (id) => {
-
     console.log(id);
     await axiosSecure.patch(`/donationDone/${id}`).then((res) => {
       console.log(res.data);
@@ -127,14 +124,11 @@ const MyDonationRequests = () => {
           position: "center",
           timer: 1500,
         });
-        refetch();
       }
     });
-
-  }
+  };
   const handleCancel = async (id) => {
-
-
+    console.log(id);
     await axiosSecure.patch(`/donationReqInCancel/${id}`).then((res) => {
       console.log(res.data);
 
@@ -146,12 +140,35 @@ const MyDonationRequests = () => {
           position: "center",
           timer: 1500,
         });
-        refetch();
+        donorDataRefetch();
       }
     });
-  }
+  };
 
-
+  const handleDeleteMyReq = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/donorReqDelete/${id}`).then((res) => {
+          if (res.data.data.deletedCount > 0) {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your file has been deleted.",
+              icon: "success",
+            });
+          }
+          donorDataRefetch();
+        });
+      }
+    });
+  };
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -177,7 +194,11 @@ const MyDonationRequests = () => {
           <Tabs value="all" className="w-full z-0 md:w-max">
             <TabsHeader>
               {TABS.map(({ id, label, value }) => (
-                <Tab onClick={() => handleTabSort(value)} key={id} value={value}>
+                <Tab
+                  onClick={() => handleTabSort(value)}
+                  key={id}
+                  value={value}
+                >
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
@@ -212,202 +233,223 @@ const MyDonationRequests = () => {
             </tr>
           </thead>
           <tbody>
-            {displayData?.slice(0, 3).map(
-              (
-                {
-                  requesterName,
-                  requesterEmail,
-                  recipientName,
-                  blood,
-                  districts,
-                  _id,
-                  upuzlia,
-                  hospitalInfo,
-                  donorReqAddress,
-                  donateDate,
-                  donateTime,
-                  reqMessage,
-                  donationStatus,
+            {displayData
+              ?.slice(0, 3)
+              .map(
+                (
+                  {
+                    requesterName,
+                    requesterEmail,
+                    recipientName,
+                    blood,
+                    donorName,
+                    donorEmail,
+                    districts,
+                    _id,
+                    upuzlia,
+                    hospitalInfo,
+                    donorReqAddress,
+                    donateDate,
+                    donateTime,
+                    reqMessage,
+                    donationStatus,
+                  },
+                  index
+                ) => {
+                  const isLast = index === displayData?.length - 1;
+                  const classes = isLast
+                    ? "p-4"
+                    : "p-4 border-b border-blue-gray-50";
 
-                },
-                index
-              ) => {
-                const isLast = index === displayData?.length - 1;
-                const classes = isLast
-                  ? "p-4"
-                  : "p-4 border-b border-blue-gray-50";
-
-                return (
-                  <tr key={_id}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {index + 1}
-                          </Typography>
-
+                  return (
+                    <tr key={_id}>
+                      <td className={classes}>
+                        <div className="flex items-center gap-3">
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {index + 1}
+                            </Typography>
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-
-                        <div className="flex flex-col">
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-normal"
-                          >
-                            {recipientName}
-                          </Typography>
-                          {/* <Typography
+                      </td>
+                      <td className={classes}>
+                        <div className="flex items-center gap-3">
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {recipientName}
+                            </Typography>
+                            {/* <Typography
                                                         variant="small"
                                                         color="blue-gray"
                                                         className="font-normal opacity-70"
                                                     >
                                                         {email}
                                                     </Typography> */}
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-
-                          {upuzlia},{districts}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        {/* <Chip
+                      </td>
+                      <td className={classes}>
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal opacity-70"
+                          >
+                            {upuzlia},{districts}
+                          </Typography>
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        <div className="w-max">
+                          {/* <Chip
                                                     variant="ghost"
                                                     size="md"
                                                     value={donateDate}
                                                     color={status === "Active" ? "green" : "blue-gray"}
                                                 /> */}
-                        Date: {donateDate} <br />
-                        Time: {donateTime}
-
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      {donationStatus === "pending" ? (
-                        <><Button
-                          disabled
-                          // onClick={() => handleUpdateAsDonor(_id)}
-                          variant="outlined"
-                          color="red"
-                          sx={{ bgcolor: "#B31312", color: "white" }}
-                        >
-                          {" "}
-                          Pending
-                        </Button></>
-                      ) : (
-                        <>
-                          {donationStatus === "inprogress" ? (
-                            <>
-                              <div className="flex gap-4">
-                                <Button
-                                  onClick={() => handleUpdateInProgress(_id)}
-                                  variant="gradient"
-
-                                >
-                                  {" "}
-                                  Inprogress
-                                </Button>
-                                <Button
-                                  onClick={() => handleCancel(_id)}
-                                  variant="gradient"
-
-                                >
-                                  {" "}
-                                  Cencel
-                                </Button>
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              {donationStatus ===
-                                "done" ? (
-                                <><h2 className="p-3 text-white w-28 text-center uppercase rounded-md bg-[#B31312]">
-                                  Done
-                                </h2></>
-                              ) : (
-                                <>
-                                  <h2 className="p-3 text-white uppercase w-28 text-center rounded-md bg-[#8f8686]">
-                                    Cancel
-                                  </h2>
-                                </>
-                              )}
-                            </>
-                          )}
-                        </>
-                      )}
-                    </td>
-                    <td className={classes}>
-
-                      {donationStatus === "inprogrss" ? <>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-
-                          {requesterName}
-                          {requesterEmail}
-                        </Typography>
-
-                      </> : <>-</>}
-
-                    </td>
-                    <td className={classes}>
-
-                      <div className="flex gap-2">
-                        <Button
-                          variant="outlined"
-                          color="red"
-                          size="sm"
-
-
-                        >
-                          <Delete />
-                        </Button>
-                        <Button variant="outlined"
-                          color="red"
-                          size="sm">
-                          <Edit />
-                        </Button>
-                      </div>
-
-                    </td>
-                    <td className={classes}>
-
-                      <div className="flex gap-2">
-
-                        <Button variant="outlined"
-                          color="red"
-                          size="sm">
-                          <DetailsSharp />
-                          Details
-                        </Button>
-                      </div>
-
-                    </td>
-                  </tr>
-                );
-              }
-            )}
+                          Date: {donateDate} <br />
+                          Time: {donateTime}
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        {donationStatus === "pending" ? (
+                          <>
+                            <Button
+                              disabled
+                              // onClick={() => handleUpdateAsDonor(_id)}
+                              variant="outlined"
+                              color="red"
+                              sx={{ bgcolor: "#B31312", color: "white" }}
+                            >
+                              {" "}
+                              Pending
+                            </Button>
+                          </>
+                        ) : (
+                          <>
+                            {donationStatus === "inprogress" ? (
+                              <>
+                                <div className="flex gap-4">
+                                  <Button
+                                    onClick={() => handleUpdateInProgress(_id)}
+                                    variant="gradient"
+                                  >
+                                    {" "}
+                                    Inprogress
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleCancel(_id)}
+                                    variant="gradient"
+                                  >
+                                    {" "}
+                                    Cencel
+                                  </Button>
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                {donationStatus === "done" ? (
+                                  <>
+                                    <h2 className="p-3 text-white w-28 text-center uppercase rounded-md bg-[#B31312]">
+                                      Done
+                                    </h2>
+                                  </>
+                                ) : (
+                                  <>
+                                    <h2 className="p-3 text-white uppercase w-28 text-center rounded-md bg-[#8f8686]">
+                                      Cancel
+                                    </h2>
+                                  </>
+                                )}
+                              </>
+                            )}
+                          </>
+                        )}
+                      </td>
+                      <td className={classes}>
+                        {donationStatus !== "pending" ? (
+                          <>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal opacity-70"
+                            >
+                              Name:{donorName}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal opacity-70"
+                            >
+                              Email:{donorEmail}
+                            </Typography>
+                          </>
+                        ) : (
+                          <>-</>
+                        )}
+                      </td>
+                      <td className={classes}>
+                        {donationStatus !== "pending" ? (
+                          <>
+                            <div className="flex gap-2">
+                              <Button
+                                disabled
+                                onClick={() => handleDeleteMyReq(_id)}
+                                variant="outlined"
+                                color="red"
+                                size="sm"
+                              >
+                                <Delete />
+                              </Button>
+                              <Button
+                                disabled
+                                variant="outlined"
+                                color="red"
+                                size="sm"
+                              >
+                                <Edit />
+                              </Button>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            <div className="flex gap-2">
+                              <Button
+                                onClick={() => handleDeleteMyReq(_id)}
+                                variant="outlined"
+                                color="red"
+                                size="sm"
+                              >
+                                <Delete />
+                              </Button>
+                              <Button variant="outlined" color="red" size="sm">
+                                <Edit />
+                              </Button>
+                            </div>
+                          </>
+                        )}
+                      </td>
+                      <td className={classes}>
+                        <div className="flex gap-2">
+                          <Button variant="outlined" color="red" size="sm">
+                            <DetailsSharp />
+                            Details
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
           </tbody>
         </table>
       </CardBody>

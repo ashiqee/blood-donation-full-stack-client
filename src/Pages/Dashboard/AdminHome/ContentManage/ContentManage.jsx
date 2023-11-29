@@ -25,10 +25,13 @@ import { useQuery } from "@tanstack/react-query";
 import { data } from "autoprefixer";
 import { Link } from "react-router-dom";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
-import useBlogData from "../../../../hooks/useBlogData";
+
 import useAuth from "./../../../../hooks/useAuth";
 import { useState } from "react";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
+import useBlogAdmin from "../../../../hooks/useBlogAdmin";
+import useAdmin from "../../../../hooks/useAdmin";
 
 const TABS = [
   {
@@ -43,6 +46,10 @@ const TABS = [
     label: "Published",
     value: "published",
   },
+  {
+    label: "Unpublished",
+    value: "unpublished",
+  },
 ];
 
 const TABLE_HEAD = [
@@ -54,25 +61,74 @@ const TABLE_HEAD = [
   "Details",
 ];
 
-
 const contentManage = () => {
-  const { blogData, isBlogDataLoading, refetch } = useBlogData();
-  const [blogFilterData, setDisplayData] = useState(blogData)
+  const { blogData, isBlogDataLoading, refetch } = useBlogAdmin();
+  const [blogFilterData, setDisplayData] = useState([]);
+  const axiosSecure = useAxiosSecure();
+  const [isAdmin, isAdminLoading] = useAdmin();
 
+  useEffect(() => {
+    setDisplayData(blogData);
+  }, [setDisplayData, blogData]);
+
+  if (isBlogDataLoading) {
+    return (
+      <>
+        <div className="h-screen container mx-auto flex justify-center items-center">
+          <img
+            className=""
+            src="https://cdn.dribbble.com/users/251111/screenshots/2775428/dailyui-014.gif"
+            alt=""
+          />
+        </div>
+      </>
+    );
+  }
 
   const handleTabSort = (value) => {
-
     if (value === "all") {
-      refetch()
-      return setDisplayData(blogData)
+      refetch();
+      return setDisplayData(blogData);
     }
-    const darftData = blogData.filter((blog) => blog?.blogStatus === value)
-    setDisplayData(darftData)
-
+    const draftData = blogData.filter((blog) => blog?.blogStatus === value);
+    setDisplayData(draftData);
   };
 
+  const handleUpdateBlogStatus = async (id) => {
+    const res = await axiosSecure.patch(`/updateBlogStatus/${id}`);
+    if (res.data.modifiedCount > 0) {
+      Swal.fire({
+        title: "published!",
+        text: "Your blog post has been published.",
+        icon: "success",
+      });
+      refetch();
+    }
+  };
 
+  const handleUpdateBlogStatusUn = async (id) => {
+    const res = await axiosSecure.patch(`/updateBlogStatusUnpublished/${id}`);
+    if (res.data.modifiedCount > 0) {
+      Swal.fire({
+        title: "published!",
+        text: "Your blog post has been published.",
+        icon: "success",
+      });
+      refetch();
+    }
+  };
 
+  const handleDeleteBlog = async (id) => {
+    const res = await axiosSecure.delete(`/blogDelete/${id}`);
+    if (res.data.deletedCount > 0) {
+      Swal.fire({
+        title: "Deleted!",
+        text: "Your blog post has been Deleted.",
+        icon: "success",
+      });
+      refetch();
+    }
+  };
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -136,140 +192,205 @@ const contentManage = () => {
             </tr>
           </thead>
           <tbody>
-            {blogFilterData?.map(({ title, author, blogStatus }, index) => {
-              const isLast = index === blogData?.length - 1;
-              const classes = isLast
-                ? "p-4"
-                : "p-4 border-b border-blue-gray-50";
+            {blogFilterData?.map(
+              ({ _id, title, author, blogStatus }, index) => {
+                const isLast = index === blogData?.length - 1;
+                const classes = isLast
+                  ? "p-4"
+                  : "p-4 border-b border-blue-gray-50";
 
-              return (
-                <tr key={data._id}>
-                  <td className={classes}>
-                    <div className="flex items-center gap-3">
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {index + 1}
-                        </Typography>
-                        {/* <Typography
+                return (
+                  <tr key={_id}>
+                    <td className={classes}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {index + 1}
+                          </Typography>
+                          {/* <Typography
                                                         variant="small"
                                                         color="blue-gray"
                                                         className="font-normal opacity-70"
                                                     >
                                                         {email}
                                                     </Typography> */}
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="flex items-center gap-3">
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {title}
-                        </Typography>
-                        {/* <Typography
+                    </td>
+                    <td className={classes}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {title}
+                          </Typography>
+                          {/* <Typography
                                                         variant="small"
                                                         color="blue-gray"
                                                         className="font-normal opacity-70"
                                                     >
                                                         {email}
                                                     </Typography> */}
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="flex flex-col">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal opacity-70"
-                      >
-                        {author}
-                      </Typography>
-                    </div>
-                  </td>
-
-                  <td className={classes}>
-                    {blogStatus === "draft" ? (
-                      <>
-                        <Button
-                          // onClick={() => handleUpdateAsDonor(_id)}
-                          variant="outlined"
-                          color="red"
-                          sx={{ bgcolor: "#B31312", color: "white" }}
+                    </td>
+                    <td className={classes}>
+                      <div className="flex flex-col">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-70"
                         >
-                          {" "}
-                          Draft
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        {blogStatus === "published" ? (
-                          <>
-                            <div className="flex gap-4">
+                          {author}
+                        </Typography>
+                      </div>
+                    </td>
+
+                    <td className={classes}>
+                      {blogStatus === "draft" ? (
+                        <>
+                          {isAdmin ? (
+                            <>
+                              <div className="flex gap-5">
+                                {" "}
+                                <Button
+                                  variant="text"
+                                  color="red"
+                                  className="mr-6"
+                                  sx={{ bgcolor: "#B31312", color: "white" }}
+                                >
+                                  {" "}
+                                  Draft
+                                </Button>
+                                <Button
+                                  onClick={() => handleUpdateBlogStatus(_id)}
+                                  variant="outlined"
+                                  color="red"
+                                  sx={{ bgcolor: "#B31312", color: "white" }}
+                                >
+                                  {" "}
+                                  Published
+                                </Button>
+                              </div>
+                            </>
+                          ) : (
+                            <>
                               <Button
-                                // onClick={() => handleUpdateAsDonor(_id)}
-                                variant="contained"
+                                variant="text"
+                                color="red"
                                 sx={{ bgcolor: "#B31312", color: "white" }}
                               >
                                 {" "}
-                                Published
+                                Draft
                               </Button>
-                              <Button
-                                // onClick={() => handleUpdateAsDonor(_id)}
-                                variant="contained"
-                                sx={{ bgcolor: "#B31312", color: "white" }}
-                              >
-                                {" "}
-                                Unpublished
-                              </Button>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            {blogStatus === "unpublished" ? (
-                              <>d</>
-                            ) : (
-                              <>
-                                <h2 className="p-3 text-white w-24 rounded-md bg-[#B31312]">
-                                  Unpublished
-                                </h2>
-                              </>
-                            )}
-                          </>
+                            </>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {blogStatus === "published" ? (
+                            <>
+                              <div className="flex gap-4">
+                                <Button
+                                  variant="text"
+                                  color="red"
+                                  sx={{ bgcolor: "#B31312", color: "white" }}
+                                >
+                                  {" "}
+                                  Published
+                                </Button>
+                                {isAdmin && (
+                                  <Button
+                                    size="sm"
+                                    onClick={() =>
+                                      handleUpdateBlogStatusUn(_id)
+                                    }
+                                    variant="outlined"
+                                  >
+                                    {" "}
+                                    Unpublished
+                                  </Button>
+                                )}
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              {blogStatus === "unpublished" ? (
+                                <>
+                                  <Button
+                                    variant="text"
+                                    color="gray"
+                                    sx={{ bgcolor: "#B31312", color: "white" }}
+                                  >
+                                    {" "}
+                                    Unpublished
+                                  </Button>
+                                  {isAdmin && (
+                                    <Button
+                                      variant="outlined"
+                                      onClick={() =>
+                                        handleUpdateBlogStatus(_id)
+                                      }
+                                      color="red"
+                                      sx={{
+                                        bgcolor: "#B31312",
+                                        color: "white",
+                                      }}
+                                    >
+                                      {" "}
+                                      Published
+                                    </Button>
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  <h2 className="p-3 text-white w-24 rounded-md bg-[#B31312]">
+                                    Unpublished
+                                  </h2>
+                                </>
+                              )}
+                            </>
+                          )}
+                        </>
+                      )}
+                    </td>
+
+                    <td className={classes}>
+                      <div className="flex gap-2">
+                        {isAdmin && (
+                          <Button
+                            onClick={() => handleDeleteBlog(_id)}
+                            variant="outlined"
+                            color="red"
+                            size="sm"
+                          >
+                            <Delete />
+                          </Button>
                         )}
-                      </>
-                    )}
-                  </td>
-
-                  <td className={classes}>
-                    <div className="flex gap-2">
-                      <Button variant="outlined" color="red" size="sm">
-                        <Delete />
-                      </Button>
-                      <Button variant="outlined" color="red" size="sm">
-                        <Edit />
-                      </Button>
-                    </div>
-                  </td>
-                  <td className={classes}>
-                    <div className="flex gap-2">
-                      <Button variant="outlined" color="red" size="sm">
-                        <DetailsSharp />
-                        Details
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
+                        <Button variant="outlined" color="red" size="sm">
+                          <Edit />
+                        </Button>
+                      </div>
+                    </td>
+                    <td className={classes}>
+                      <div className="flex gap-2">
+                        <Button variant="outlined" color="red" size="sm">
+                          <DetailsSharp />
+                          Details
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </table>
       </CardBody>

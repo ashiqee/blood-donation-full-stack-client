@@ -22,6 +22,7 @@ import { Delete, DetailsSharp, Edit } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useAdmin from "./../../hooks/useAdmin";
 
 const TABS = [
   {
@@ -46,31 +47,53 @@ const TABS = [
   },
 ];
 
-const TABLE_HEAD = [
-  "Recipient name",
-  "Recipient Location",
-  "Donation Date & time",
-  "Donation Status",
-  "Donor Information",
-  "Action",
-  "Details",
-];
-const TableDonorReqs = ({ data, loading, refetch }) => {
+const TableDonorReqs = ({
+  data,
+  handleUpdateInProgress,
+  handleCancel,
+  handleDeleteMyReq,
+  loading,
+  refetch,
+}) => {
+  const [displayData, setDisplayData] = useState(data);
 
-  const [displayData, setDisplayData] = useState(data)
+  const [isAdmin, isAdminLoading] = useAdmin();
+
+  if (isAdminLoading) {
+    return (
+      <>
+        <div className="h-screen container mx-auto flex justify-center items-center">
+          <img
+            className=""
+            src="https://cdn.dribbble.com/users/251111/screenshots/2775428/dailyui-014.gif"
+            alt=""
+          />
+        </div>
+      </>
+    );
+  }
+  const TABLE_HEAD = [
+    "#",
+    "Recipient name",
+    "Recipient Location",
+    "Donation Date & time",
+    "Donation Status",
+    "Donor Information",
+    isAdmin ? "Action" : "",
+    "Details",
+  ];
 
   const handleTabSort = (value) => {
-
     if (value === "all") {
-      refetch()
-      return setDisplayData(data)
-    }
-    const filterData = data.filter((req) => req?.donationStatus === value)
-    setDisplayData(filterData)
+      refetch();
 
+      return setDisplayData(data);
+    }
+    const filterData = data.filter((req) => req?.donationStatus === value);
+    setDisplayData(filterData);
   };
 
-
+  console.log(displayData);
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -159,7 +182,27 @@ const TableDonorReqs = ({ data, loading, refetch }) => {
                   : "p-4 border-b border-blue-gray-50";
 
                 return (
-                  <tr key={name}>
+                  <tr key={index}>
+                    <td className={classes}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {index + 1}
+                          </Typography>
+                          {/* <Typography
+                                                        variant="small"
+                                                        color="blue-gray"
+                                                        className="font-normal opacity-70"
+                                                    >
+                                                        {email}
+                                                    </Typography> */}
+                        </div>
+                      </div>
+                    </td>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
                         <div className="flex flex-col">
@@ -212,6 +255,7 @@ const TableDonorReqs = ({ data, loading, refetch }) => {
                       {donationStatus === "pending" ? (
                         <>
                           <Button
+                            disabled
                             // onClick={() => handleUpdateAsDonor(_id)}
                             variant="outlined"
                             color="red"
@@ -227,17 +271,15 @@ const TableDonorReqs = ({ data, loading, refetch }) => {
                             <>
                               <div className="flex gap-4">
                                 <Button
-                                  // onClick={() => handleUpdateAsDonor(_id)}
-                                  variant="contained"
-                                  sx={{ bgcolor: "#B31312", color: "white" }}
+                                  onClick={() => handleUpdateInProgress(_id)}
+                                  variant="gradient"
                                 >
                                   {" "}
                                   Inprogress
                                 </Button>
                                 <Button
-                                  // onClick={() => handleUpdateAsDonor(_id)}
-                                  variant="contained"
-                                  sx={{ bgcolor: "#B31312", color: "white" }}
+                                  onClick={() => handleCancel(_id)}
+                                  variant="gradient"
                                 >
                                   {" "}
                                   Cencel
@@ -247,11 +289,15 @@ const TableDonorReqs = ({ data, loading, refetch }) => {
                           ) : (
                             <>
                               {donationStatus === "done" ? (
-                                <>d</>
+                                <>
+                                  <h2 className="p-3 text-white w-28 text-center uppercase rounded-md bg-[#B31312]">
+                                    Done
+                                  </h2>
+                                </>
                               ) : (
                                 <>
-                                  <h2 className="p-3 text-white w-24 rounded-md bg-[#B31312]">
-                                    Done
+                                  <h2 className="p-3 text-white uppercase w-28 text-center rounded-md bg-[#8f8686]">
+                                    Cancel
                                   </h2>
                                 </>
                               )}
@@ -261,7 +307,7 @@ const TableDonorReqs = ({ data, loading, refetch }) => {
                       )}
                     </td>
                     <td className={classes}>
-                      {donationStatus === "inprogress" ? (
+                      {donationStatus !== "pending" ? (
                         <>
                           <Typography
                             variant="small"
@@ -283,14 +329,24 @@ const TableDonorReqs = ({ data, loading, refetch }) => {
                       )}
                     </td>
                     <td className={classes}>
-                      <div className="flex gap-2">
-                        <Button variant="outlined" color="red" size="sm">
-                          <Delete />
-                        </Button>
-                        <Button variant="outlined" color="red" size="sm">
-                          <Edit />
-                        </Button>
-                      </div>
+                      {/* isAdmin verify  */}
+                      {isAdmin && (
+                        <div className="flex gap-2">
+                          <div className="flex gap-2">
+                            <Button
+                              onClick={() => handleDeleteMyReq(_id)}
+                              variant="outlined"
+                              color="red"
+                              size="sm"
+                            >
+                              <Delete />
+                            </Button>
+                            <Button variant="outlined" color="red" size="sm">
+                              <Edit />
+                            </Button>
+                          </div>
+                        </div>
+                      )}
                     </td>
                     <td className={classes}>
                       <div className="flex gap-2">

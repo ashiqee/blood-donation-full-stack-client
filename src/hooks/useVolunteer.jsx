@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
-import useSingleUserData from "./useSingleUserData";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "./useAuth";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useVolunteer = () => {
-  const [userInfo, isVolunteerLoading, refetch] = useSingleUserData();
-  const [isVolunteer, setIsVolunteer] = useState(false);
+  const { user, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
-  useEffect(() => {
-    if (userInfo?.role === "Volunteer") {
-      setIsVolunteer(true);
-    }
-  }, [userInfo]);
+  const { data: isVolunteer, isPending: isVolunteerLoading } = useQuery({
+    queryKey: [user?.email, "isVolunteer"],
+    enabled: !loading,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/user/volunteer/${user?.email}`);
+
+      return res.data?.volunteer;
+    },
+  });
 
   return [isVolunteer, isVolunteerLoading];
 };

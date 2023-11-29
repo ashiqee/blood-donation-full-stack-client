@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import useDistricts from "../../hooks/useDistricts";
 import Option from "../../Components/Option/Option";
@@ -26,11 +26,15 @@ const img_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting}`;
 
 const SignUp = () => {
   const [districts, handleDistricts, upuzzila] = useDistricts();
-  const { createUser, updateUser } = useAuth();
+  const { createUser, updateUser, logOut } = useAuth();
   const [profileImage, setProfileImage] = useState(
     "https://www.thedivorceangels.com/wp-content/themes/divorceangels/images/avatars/default-8.png"
   );
   const axiosPublic = usePublicAxios();
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
 
   const bloodGroup = [
     { id: 1, name: "A+" },
@@ -177,17 +181,35 @@ const SignUp = () => {
 
     //  SEND DB
 
-    const userRegInfo = await axiosPublic.post("/user", userInfo);
-    if (userRegInfo?.data.insertedId);
-    {
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: `Registration Successful`,
-        showConfirmButton: false,
-        timer: 1500,
+    await axiosPublic
+      .post("/user", userInfo)
+      .then((res) => {
+        if (res?.data.insertedId) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: `Registration Successful`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+
+        logOut();
+        navigate("/");
+        {
+          navigate(from, { replace: true });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: `Registration failed`,
+          text: `${error.message}`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
-    }
   };
 
   return (
