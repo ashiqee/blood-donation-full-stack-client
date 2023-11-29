@@ -84,17 +84,7 @@ const Search = () => {
                     />
 
                 </div>
-                <div className='w-48'>
-                    <TextField
-                        type="email"
-                        id='email'
-                        name="email"
-                        label='email'
-                        autoComplete="email"
 
-
-                    />
-                </div>
 
 
 

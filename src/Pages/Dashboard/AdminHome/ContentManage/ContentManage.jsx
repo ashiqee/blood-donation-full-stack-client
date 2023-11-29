@@ -27,6 +27,8 @@ import { Link } from "react-router-dom";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useBlogData from "../../../../hooks/useBlogData";
 import useAuth from "./../../../../hooks/useAuth";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const TABS = [
   {
@@ -52,12 +54,25 @@ const TABLE_HEAD = [
   "Details",
 ];
 
-const handleTabSort = (value) => {
-  console.log(value);
-};
 
 const contentManage = () => {
   const { blogData, isBlogDataLoading, refetch } = useBlogData();
+  const [blogFilterData, setDisplayData] = useState(blogData)
+
+
+  const handleTabSort = (value) => {
+
+    if (value === "all") {
+      refetch()
+      return setDisplayData(blogData)
+    }
+    const darftData = blogData.filter((blog) => blog?.blogStatus === value)
+    setDisplayData(darftData)
+
+  };
+
+
+
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -121,7 +136,7 @@ const contentManage = () => {
             </tr>
           </thead>
           <tbody>
-            {blogData?.map(({ title, author, blogStatus }, index) => {
+            {blogFilterData?.map(({ title, author, blogStatus }, index) => {
               const isLast = index === blogData?.length - 1;
               const classes = isLast
                 ? "p-4"

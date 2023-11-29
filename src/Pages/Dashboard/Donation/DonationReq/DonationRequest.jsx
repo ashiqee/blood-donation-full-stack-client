@@ -4,6 +4,7 @@ import DonationDetailsCard from "../DonationDetailsCard";
 import useAuth from "./../../../../hooks/useAuth";
 import usePublicAxios from "./../../../../hooks/usePublicAxios";
 import DonationReqCard from "./DonationReqCard";
+import PageTitle from "../../../../Components/PageTitle/PageTitle";
 const DonationRequest = () => {
   const { loading } = useAuth();
   const axiosPublic = usePublicAxios();
@@ -26,11 +27,8 @@ const DonationRequest = () => {
 
   return (
     <div className="container mx-auto">
-      <div className="my-10">
-        <h2 className="text-center text-red-800 text-2xl font-bold">
-          Donation Request
-        </h2>
-      </div>
+      <PageTitle text={'Donation Request'} subHeading={"Donate blood save life"} />
+
       {donationReqPending?.length < 0 ? (
         <>
           <div className="min-h-[50vh] items-center origin-center place-content-center">

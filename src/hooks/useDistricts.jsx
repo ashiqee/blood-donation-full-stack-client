@@ -26,6 +26,7 @@ const useDistricts = () => {
             return res.data
         }
     })
+
     //get upuzilla data
     const { data: upuzzila = [], refetch } = useQuery({
         queryKey: ['upuzzila'],

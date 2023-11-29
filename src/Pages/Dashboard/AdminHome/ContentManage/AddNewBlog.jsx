@@ -44,12 +44,14 @@ const AddNewBlog = () => {
   };
 
   const handleAddBlogPost = async () => {
+
+    const date = new Date();
     const blogData = {
       title: title,
       author: user?.displayName,
       blogImg: blogImg,
       blogContent: content,
-
+      date: date,
       blogStatus: "draft",
     };
 
