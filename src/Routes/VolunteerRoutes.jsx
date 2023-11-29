@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
+import useAdmin from "../hooks/useAdmin";
 
 import useAuth from "../hooks/useAuth";
 import useVolunteer from "../hooks/useVolunteer";
@@ -6,10 +7,11 @@ import useVolunteer from "../hooks/useVolunteer";
 const VolunteerRoutes = ({ children }) => {
   const location = useLocation();
   const { user, loading } = useAuth();
+  const [isAdmin, isAdminLoading] = useAdmin();
 
   const [isVolunteer, isVolunteerLoading] = useVolunteer();
 
-  if (loading || isVolunteerLoading) {
+  if (loading || isVolunteerLoading || isAdminLoading) {
     return (
       <>
         <div className="h-screen container mx-auto flex justify-center items-center">
@@ -23,7 +25,7 @@ const VolunteerRoutes = ({ children }) => {
     );
   }
 
-  if (user && isVolunteer) {
+  if (user && (isVolunteer || isAdmin)) {
     return children;
   }
 

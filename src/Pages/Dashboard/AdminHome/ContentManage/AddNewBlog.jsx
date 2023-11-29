@@ -2,6 +2,8 @@ import { Button, InputLabel, TextField } from "@mui/material";
 import HTMLReactParser from "html-react-parser";
 import JoditEditor from "jodit-react";
 import { useRef, useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import useAuth from "../../../../hooks/useAuth";
 import useAxiosSecure from "./../../../../hooks/useAxiosSecure";
 
@@ -14,6 +16,7 @@ const AddNewBlog = () => {
   const [title, setTitle] = useState("");
   const [blogImg, setBlogImg] = useState("");
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   const axiosSecure = useAxiosSecure();
 
@@ -44,7 +47,6 @@ const AddNewBlog = () => {
   };
 
   const handleAddBlogPost = async () => {
-
     const date = new Date();
     const blogData = {
       title: title,
@@ -56,13 +58,22 @@ const AddNewBlog = () => {
     };
 
     const res = await axiosSecure.post("/addBlog", blogData);
-    console.log(res.data);
+    if (res.data) {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: `add blog post Successful`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/dashboard/content-management");
+    }
   };
   return (
     <div className=" mx-auto p-10">
       <div>
         <div>
-          <h2 className="text-2xl">Add new blog position</h2>
+          <h2 className="text-2xl">Add new blog post</h2>
         </div>
         <div className="flex gap-10 mb-10">
           <div className="w-full">
@@ -76,7 +87,6 @@ const AddNewBlog = () => {
             />
           </div>
           <div className="w-full">
-            <label>Thumbnail</label>
             <TextField
               type="file"
               id="img"
