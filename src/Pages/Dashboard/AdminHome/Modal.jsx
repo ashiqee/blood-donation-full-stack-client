@@ -45,7 +45,11 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
       console.log(userUpdateRoleData);
 
       const userRoleUpdate = await axiosSecure
-        .patch(`/user/admin/${id}`, userUpdateRoleData)
+        .patch(`/user/admin/${id}`, {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        }, userUpdateRoleData)
         .then((res) => {
           console.log(res.data);
           if (res.data.modifiedCount > 0) {
@@ -181,14 +185,14 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
                     <div className="flex-col space-y-4 my-auto items-center justify-center  p-5 gap-5">
                       <div className=" flex justify-between text-center  gap-5">
                         <div className="w-full ">
-                          <button
+                          {/* <button
                             className="py-2 bg-[#B31312] text-white  px-4 rounded-lg"
                             onClick={handleChangeStatus}
                           >
                             <Delete />
                             Delete
-                          </button>
-                        </div>
+                          </button> 
+                        </div> 
                         <div className="w-full ">
                           {/* <h2>User status now</h2> */}
                           <button
@@ -243,7 +247,7 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
             </div>
           </div>
         </Dialog>
-      </Transition.Root>
+      </Transition.Root >
     </>
   );
 };

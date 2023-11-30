@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
 import usePublicAxios from "./usePublicAxios";
+import { useEffect } from "react";
 
 const useBlogAdmin = (currentPage, pageLimit) => {
   const { loading } = useAuth();
@@ -27,6 +28,10 @@ const useBlogAdmin = (currentPage, pageLimit) => {
       return res.data;
     },
   });
+
+  useEffect(() => {
+    refetch()
+  }, [refetch, currentPage, pageLimit])
 
   return { blogData, isBlogDataLoading, refetch };
 };

@@ -26,10 +26,14 @@ import UserFundingHistory from "../Pages/Dashboard/FundingHistory/UserFundingHis
 import VolunteerRoutes from "./volunteerRoutes";
 import AdminFundingHistory from "../Pages/Dashboard/FundingHistory/adminFundingHistory";
 
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import EditDonationReq from "../Pages/Dashboard/Donor/editDonationReq";
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -124,6 +128,10 @@ const router = createBrowserRouter([
       {
         path: "/dashboard/create-donation-request",
         element: <CreateDonation />,
+      },
+      {
+        path: '/dashboard/updateDonationReq/:id',
+        element: <EditDonationReq />
       },
       {
         path: "/dashboard/addBlog",

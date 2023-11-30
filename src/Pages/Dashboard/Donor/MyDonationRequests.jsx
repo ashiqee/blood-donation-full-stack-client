@@ -26,6 +26,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 
 const TABS = [
   {
@@ -447,14 +448,16 @@ const MyDonationRequests = () => {
                             >
                               <Delete />
                             </Button>
-                            <Button
-                              disabled
-                              variant="outlined"
-                              color="red"
-                              size="sm"
-                            >
-                              <Edit />
-                            </Button>
+                            <Link to={`/dashboard/updateDonationReq/${_id}`}>
+                              <Button
+                                disabled
+                                variant="outlined"
+                                color="red"
+                                size="sm"
+                              >
+                                <Edit />
+                              </Button>
+                            </Link>
                           </div>
                         </>
                       ) : (
@@ -469,19 +472,25 @@ const MyDonationRequests = () => {
                             >
                               <Delete />
                             </Button>
-                            <Button variant="outlined" color="red" size="sm">
-                              <Edit />
-                            </Button>
+
+                            <Link to={`/dashboard/updateDonationReq/${_id}`}>
+                              <Button variant="outlined" color="red" size="sm">
+                                <Edit />
+                              </Button>
+
+                            </Link>
+
                           </div>
                         </>
                       )}
                     </td>
                     <td className={classes}>
                       <div className="flex gap-2">
-                        <Button variant="outlined" color="red" size="sm">
-                          <DetailsSharp />
-                          Details
-                        </Button>
+                        <Link to={`/donationDetails/${_id}`}>
+                          <Button variant="outlined" color="red" size="sm">
+                            <DetailsSharp />
+                            Details
+                          </Button></Link>
                       </div>
                     </td>
                   </tr>

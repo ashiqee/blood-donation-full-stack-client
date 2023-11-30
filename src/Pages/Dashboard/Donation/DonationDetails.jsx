@@ -9,7 +9,7 @@ const DonationDetails = () => {
   const axiosPublic = usePublicAxios();
 
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
 
   const {
     data: donationDetail,
@@ -27,7 +27,7 @@ const DonationDetails = () => {
 
   return (
     <div>
-      <DonationDetailsCard data={donationDetail} />
+      <DonationDetailsCard data={donationDetail} refetch={refetch} />
     </div>
   );
 };

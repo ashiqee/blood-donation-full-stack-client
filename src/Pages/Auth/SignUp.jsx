@@ -194,7 +194,7 @@ const SignUp = () => {
           });
         }
 
-        logOut();
+
         navigate("/");
         {
           navigate(from, { replace: true });

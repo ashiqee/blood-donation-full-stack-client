@@ -1,3 +1,4 @@
+import LoadingCom from "../../Components/Loading/LoadingCom";
 import PageTitle from "../../Components/PageTitle/PageTitle";
 import useBlogData from "../../hooks/useBlogData";
 import BlogCard from "./BlogCard";
@@ -6,7 +7,9 @@ import BlogCard from "./BlogCard";
 const Blog = () => {
   const { blogData, isBlogDataLoading, refetch } = useBlogData(null);
 
-  console.log(blogData);
+  if (isBlogDataLoading) {
+    return <LoadingCom />
+  }
   return (
     <div>
       <PageTitle text={"Blog"} subHeading={'Donate blood save life'} />

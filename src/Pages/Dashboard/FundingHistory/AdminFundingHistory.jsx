@@ -31,7 +31,7 @@ const AdminFundingHistory = () => {
 
     const axiosSecure = useAxiosSecure()
     const { user, loading } = useAuth()
-    const { totalFundAmount } = useStaticsReport()
+    const { statictisData } = useStaticsReport()
     const [pageLimit, setPageLimit] = useState(3)
     const [currentPage, setCurrentPage] = useState(1)
 
@@ -129,7 +129,7 @@ const AdminFundingHistory = () => {
                     </div>
                     <div>
 
-                        <h2 className="text-2xl mr-20">Total Fund Amount: <span className="text-red-600 font-extrabold">{totalFundAmount?.totalAmount}$</span></h2>
+                        <h2 className="text-2xl mr-20">Total Fund Amount: <span className="text-red-600 font-extrabold">{statictisData?.totalFundAmount}$</span></h2>
 
                     </div>
                 </div>

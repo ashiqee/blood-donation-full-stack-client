@@ -73,7 +73,7 @@ const contentManage = () => {
   useEffect(() => {
     refetch()
     setDisplayData(blogData)
-  }, [currentPage, pageLimit, blogData, refetch]);
+  }, [currentPage, blogData, pageLimit, refetch]);
 
 
 
@@ -105,10 +105,14 @@ const contentManage = () => {
   };
 
   const handleUpdateBlogStatus = async (id) => {
-    const res = await axiosSecure.patch(`/updateBlogStatus/${id}`);
+    const res = await axiosSecure.patch(`/updateBlogStatus/${id}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
     if (res.data.modifiedCount > 0) {
       Swal.fire({
-        title: "published!",
+        title: "Published!",
         text: "Your blog post has been published.",
         icon: "success",
       });
@@ -117,11 +121,15 @@ const contentManage = () => {
   };
 
   const handleUpdateBlogStatusUn = async (id) => {
-    const res = await axiosSecure.patch(`/updateBlogStatusUnpublished/${id}`);
+    const res = await axiosSecure.patch(`/updateBlogStatusUnpublished/${id}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    });
     if (res.data.modifiedCount > 0) {
       Swal.fire({
-        title: "published!",
-        text: "Your blog post has been published.",
+        title: "Unpublished!",
+        text: "Your blog post has been unpublished.",
         icon: "success",
       });
       refetch();
@@ -129,15 +137,37 @@ const contentManage = () => {
   };
 
   const handleDeleteBlog = async (id) => {
-    const res = await axiosSecure.delete(`/blogDelete/${id}`);
-    if (res.data.deletedCount > 0) {
-      Swal.fire({
-        title: "Deleted!",
-        text: "Your blog post has been Deleted.",
-        icon: "success",
-      });
-      refetch();
-    }
+
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const res = axiosSecure.delete(`/blogDelete/${id}`, {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (res.data.deletedCount > 0) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your blog post has been Deleted.",
+            icon: "success",
+          });
+          refetch();
+        }
+      }
+    });
+
+
+
+
   };
 
 

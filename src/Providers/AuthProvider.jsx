@@ -10,12 +10,15 @@ import app from "../Config/Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import usePublicAxios from "../hooks/usePublicAxios";
 
+
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const axiosPublic = usePublicAxios();
+
+
 
   const createUser = (email, password) => {
     setLoading(true);

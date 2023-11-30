@@ -9,7 +9,7 @@ import {
 import SecTitle from "../../../Components/SectionTitle/SecTitle";
 import DonationDetailsModal from "./DonationDetailsModal";
 
-const DonationDetailsCard = ({ data }) => {
+const DonationDetailsCard = ({ data, refetch }) => {
   return (
     <Card className="mt-6 w-full">
       <CardHeader color="" className="relative h-56">
@@ -45,6 +45,7 @@ const DonationDetailsCard = ({ data }) => {
               <DonationDetailsModal
                 id={data?._id}
                 status={data?.donationStatus}
+                refetch={refetch}
               />
             </CardFooter>
           </div>

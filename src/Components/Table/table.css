@@ -1,0 +1,10 @@
+.overFlow{
+    overflow-x:  auto !important;
+}
+
+@media (max-width:600px) {
+    .hidden-xs{
+        display: none;
+    }
+    
+}

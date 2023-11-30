@@ -5,12 +5,14 @@ import useAuth from "./../../../../hooks/useAuth";
 import usePublicAxios from "./../../../../hooks/usePublicAxios";
 import DonationReqCard from "./DonationReqCard";
 import PageTitle from "../../../../Components/PageTitle/PageTitle";
+import LoadingCom from "../../../../Components/Loading/LoadingCom";
 const DonationRequest = () => {
   const { loading } = useAuth();
   const axiosPublic = usePublicAxios();
 
   const {
     data: donationReqPending,
+    isLoading,
 
     refetch,
   } = useQuery({
@@ -23,7 +25,9 @@ const DonationRequest = () => {
     },
   });
 
-
+  if (isLoading) {
+    return <LoadingCom />
+  }
 
   return (
     <div className="container mx-auto">

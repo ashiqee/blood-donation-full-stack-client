@@ -1,13 +1,13 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
-import { Box, Divider, IconButton, InputLabel, TextField } from "@mui/material";
-import { PencilIcon } from "@heroicons/react/24/solid";
+import { Box, Divider, InputLabel, TextField } from "@mui/material";
+
 import useAuth from "./../../../hooks/useAuth";
 import usePublicAxios from "../../../hooks/usePublicAxios";
 import Swal from "sweetalert2";
 
-const DonationDetailsModal = ({ id, status }) => {
+const DonationDetailsModal = ({ id, status, refetch }) => {
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const axiosPublic = usePublicAxios();
@@ -34,6 +34,7 @@ const DonationDetailsModal = ({ id, status }) => {
         timer: 1500,
       });
       setOpen(false);
+      refetch()
     }
   };
   return (

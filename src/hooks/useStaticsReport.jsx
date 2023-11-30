@@ -11,14 +11,14 @@ const useStaticsReport = () => {
     // get all donationReq
 
     const {
-        data: totalFundAmount,
-        isPending: isFundAmountLoading,
-        refetch: fundRefetch,
+        data: statictisData,
+        isPending: isstatictisDataLoading,
+        refetch: statictisDataRefetch,
     } = useQuery({
         queryKey: ["blogData"],
         enabled: !loading,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/totalFund`);
+            const res = await axiosSecure.get(`/statictisData`);
             return res.data;
         },
     });
@@ -28,7 +28,7 @@ const useStaticsReport = () => {
 
 
 
-    return { totalFundAmount }
+    return { statictisData, isstatictisDataLoading }
 };
 
 export default useStaticsReport;

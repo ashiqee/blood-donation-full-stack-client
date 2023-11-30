@@ -31,6 +31,7 @@ import useAdmin from "../../../hooks/useAdmin";
 import useVolunteer from "../../../hooks/useVolunteer";
 import useAuth from "../../../hooks/useAuth";
 
+
 const SideBar = () => {
   const { user, logOut } = useAuth()
   const [isDonor] = useDonor();
@@ -48,9 +49,7 @@ const SideBar = () => {
     }
   }, [isSmallSecreen]);
 
-  if (isAdminLoading) {
-    return <> Loading....</>;
-  }
+
 
   return (
     <div className="min-h-screen shadow-xl bg-gradient-to-r from-pink-50 to-orange-50 shadow-blue-gray-900/50">
@@ -75,6 +74,8 @@ const SideBar = () => {
               </Typography>
               <img className="w-20 h-20 p-2 rounded-full" src={user?.photoURL} alt="" />
               <h2>{user?.displayName}</h2>
+              <br />
+
               <Divider />
             </div>
             <List>

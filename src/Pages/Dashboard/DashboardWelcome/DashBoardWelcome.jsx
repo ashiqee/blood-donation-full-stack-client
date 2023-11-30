@@ -1,7 +1,14 @@
+import LoadingCom from "../../../Components/Loading/LoadingCom";
 import useSingleUserData from "./../../../hooks/useSingleUserData";
 
 const DashBoardWelcome = () => {
   const [userInfo, isUserLoading, refetch] = useSingleUserData();
+
+  if (isUserLoading) {
+    return <LoadingCom />
+  }
+
+
   return (
     <div className="grid min-w-[calc(100vw-290px)] mx-auto items-center place-items-center md:grid-cols-2   gap-5">
       <div>

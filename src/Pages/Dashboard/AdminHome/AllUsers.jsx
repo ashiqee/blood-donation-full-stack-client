@@ -23,6 +23,7 @@ import Swal from "sweetalert2";
 
 import { useState } from "react";
 import { useEffect } from "react";
+import LoadingCom from "../../../Components/Loading/LoadingCom";
 
 const TABS = [
   {
@@ -69,11 +70,13 @@ const AllUsers = () => {
   useEffect(() => {
     refetch()
     setDisplayData(users)
-  }, [users, refetch])
+  }, [users, refetch, pageLimit])
 
 
 
-
+  if (isUserLoading) {
+    return <LoadingCom />
+  }
 
 
 
@@ -81,7 +84,11 @@ const AllUsers = () => {
   const handleUpdateAsDonor = async (id) => {
 
 
-    await axiosSecure.patch(`/user/admin/donorReq/${id}`).then((res) => {
+    await axiosSecure.patch(`/user/admin/donorReq/${id}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((res) => {
 
 
       if (res.data.modifiedCount > 0) {
@@ -99,7 +106,11 @@ const AllUsers = () => {
   const handleUpdateAsVolunteer = async (id) => {
     console.log("Approved");
 
-    await axiosSecure.patch(`/user/admin/volunteerReq/${id}`).then((res) => {
+    await axiosSecure.patch(`/user/admin/volunteerReq/${id}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('token')}`
+      }
+    }).then((res) => {
       console.log(res.data);
 
       if (res.data.modifiedCount > 0) {
@@ -147,8 +158,10 @@ const AllUsers = () => {
   // pagination end 
 
   const handleTabSort = (value) => {
+
     if (value === "all") {
       refetch();
+      setPageLimit(20)
 
       return setDisplayData(users);
     }
