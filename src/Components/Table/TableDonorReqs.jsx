@@ -18,6 +18,7 @@ import { Delete, DetailsSharp, Edit } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useAdmin from "./../../hooks/useAdmin";
+import { useEffect } from "react";
 
 const TABS = [
   {
@@ -49,6 +50,12 @@ const TableDonorReqs = ({
   handleDeleteMyReq,
   loading,
   refetch,
+  handlePreviousPage,
+  handlePagination,
+  handleNextPage,
+  currentPage,
+  pageLimit,
+  setPageLimit,
 }) => {
   const [displayData, setDisplayData] = useState(data);
 
@@ -67,6 +74,14 @@ const TableDonorReqs = ({
       </>
     );
   }
+
+
+  useEffect(() => {
+    refetch()
+    setDisplayData(data)
+  }, [data, refetch])
+
+
   const TABLE_HEAD = [
     "#",
     "Recipient name",
@@ -88,7 +103,6 @@ const TableDonorReqs = ({
     setDisplayData(filterData);
   };
 
-  console.log(displayData);
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -102,7 +116,7 @@ const TableDonorReqs = ({
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
+            <Button onClick={() => setPageLimit(20)} variant="outlined" size="sm">
               view all
             </Button>
             {/* <Button className="flex items-center gap-3" size="sm">
@@ -362,13 +376,30 @@ const TableDonorReqs = ({
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <select onChange={handlePagination} value={pageLimit} className="p-2 border-2 bg-blue-gray-50" name="limit" id="">
+
+            <option value={3}>
+              3
+            </option>
+            <option value={5}>
+              5
+            </option>
+            <option value={10}>
+              10
+            </option>
+            <option value={20}>
+              20
+            </option>
+          </select>
+
+          <Button onClick={handlePreviousPage} variant="outlined" size="sm">
             Previous
           </Button>
-          <Button variant="outlined" size="sm">
+
+          <Button onClick={handleNextPage} variant="outlined" size="sm">
             Next
           </Button>
         </div>

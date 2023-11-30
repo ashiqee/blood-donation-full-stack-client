@@ -62,14 +62,21 @@ const TABLE_HEAD = [
 ];
 
 const contentManage = () => {
-  const { blogData, isBlogDataLoading, refetch } = useBlogAdmin();
+  const [pageLimit, setPageLimit] = useState(3)
+  const [currentPage, setCurrentPage] = useState(1)
+  const { blogData, isBlogDataLoading, refetch } = useBlogAdmin(currentPage, pageLimit);
   const [blogFilterData, setDisplayData] = useState([]);
   const axiosSecure = useAxiosSecure();
   const [isAdmin, isAdminLoading] = useAdmin();
 
+
   useEffect(() => {
-    setDisplayData(blogData);
-  }, [setDisplayData, blogData]);
+    refetch()
+    setDisplayData(blogData)
+  }, [currentPage, pageLimit, blogData, refetch]);
+
+
+
 
   if (isBlogDataLoading) {
     return (
@@ -84,6 +91,9 @@ const contentManage = () => {
       </>
     );
   }
+
+
+
 
   const handleTabSort = (value) => {
     if (value === "all") {
@@ -129,6 +139,50 @@ const contentManage = () => {
       refetch();
     }
   };
+
+
+
+
+
+
+
+
+
+  const handlePagination = (e) => {
+    e.preventDefault()
+
+    const pageLimitValue = e.target.value;
+    setPageLimit(pageLimitValue)
+
+  }
+
+
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+  const totalPage = blogData?.length;
+
+
+  const handleNextPage = () => {
+
+
+    if (currentPage < totalPage) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+
+
+
+
+
+
+
+
+
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -147,6 +201,9 @@ const contentManage = () => {
                 Add Blog
               </Button>
             </Link>
+            <Button onClick={() => setPageLimit(20)} variant="outlined" size="sm">
+              view all
+            </Button>
 
             {/* <Button className="flex items-center gap-3" size="sm">
                               <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
@@ -394,15 +451,33 @@ const contentManage = () => {
           </tbody>
         </table>
       </CardBody>
+
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <select onChange={handlePagination} value={pageLimit} className="p-2 border-2 bg-blue-gray-50" name="limit" id="">
+
+            <option value={3}>
+              3
+            </option>
+            <option value={5}>
+              5
+            </option>
+            <option value={10}>
+              10
+            </option>
+            <option value={20}>
+              20
+            </option>
+          </select>
+
+          <Button onClick={handlePreviousPage} variant="outlined" size="sm">
             Previous
           </Button>
-          <Button variant="outlined" size="sm">
+
+          <Button onClick={handleNextPage} variant="outlined" size="sm">
             Next
           </Button>
         </div>

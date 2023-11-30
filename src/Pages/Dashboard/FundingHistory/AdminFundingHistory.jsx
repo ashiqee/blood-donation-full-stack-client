@@ -20,6 +20,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useStaticsReport from "../../../hooks/useStaticsReport";
+import { useEffect } from "react";
 
 
 
@@ -31,7 +32,9 @@ const AdminFundingHistory = () => {
     const axiosSecure = useAxiosSecure()
     const { user, loading } = useAuth()
     const { totalFundAmount } = useStaticsReport()
-    console.log(totalFundAmount?.totalAmount);
+    const [pageLimit, setPageLimit] = useState(3)
+    const [currentPage, setCurrentPage] = useState(1)
+
 
 
 
@@ -46,19 +49,50 @@ const AdminFundingHistory = () => {
 
     ];
 
-
+    const pageLimitInt = parseInt(pageLimit)
 
 
     const { data: displayData, isPending: isFundLoading, refetch } = useQuery({
         queryKey: ['userFund'],
         enabled: !loading,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/fundHistory`)
+            const res = await axiosSecure.get(`/fundHistory?page=${currentPage}&limit=${pageLimitInt}`)
             console.log(res.data);
             return res.data;
         }
     })
 
+
+
+    useEffect(() => {
+        refetch()
+    }, [currentPage, pageLimit, refetch])
+
+    const handlePagination = (e) => {
+        e.preventDefault()
+
+        const pageLimitValue = e.target.value;
+        setPageLimit(pageLimitValue)
+
+    }
+
+
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+    const totalPage = displayData?.length;
+
+
+    const handleNextPage = () => {
+
+
+        if (currentPage < totalPage) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
 
 
 
@@ -70,14 +104,14 @@ const AdminFundingHistory = () => {
                 <div className="mb-8 flex items-center justify-between gap-8">
                     <div>
                         <Typography variant="h5" color="blue-gray">
-                            My Funding History
+                            All Funding History
                         </Typography>
                         <Typography color="gray" className="mt-1 font-normal">
-                            See information about all my funding history
+                            See information about all  funding history
                         </Typography>
                     </div>
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Button variant="outlined" size="sm">
+                        <Button onClick={() => setPageLimit(20)} variant="outlined" size="sm">
                             view all
                         </Button>
                         {/* <Button className="flex items-center gap-3" size="sm">
@@ -227,13 +261,30 @@ const AdminFundingHistory = () => {
             </CardBody>
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
                 <Typography variant="small" color="blue-gray" className="font-normal">
-                    Page 1 of 10
+                    Page {currentPage}
                 </Typography>
                 <div className="flex gap-2">
-                    <Button variant="outlined" size="sm">
+                    <select onChange={handlePagination} value={pageLimit} className="p-2 border-2 bg-blue-gray-50" name="limit" id="">
+
+                        <option value={3}>
+                            3
+                        </option>
+                        <option value={5}>
+                            5
+                        </option>
+                        <option value={10}>
+                            10
+                        </option>
+                        <option value={20}>
+                            20
+                        </option>
+                    </select>
+
+                    <Button onClick={handlePreviousPage} variant="outlined" size="sm">
                         Previous
                     </Button>
-                    <Button variant="outlined" size="sm">
+
+                    <Button onClick={handleNextPage} variant="outlined" size="sm">
                         Next
                     </Button>
                 </div>

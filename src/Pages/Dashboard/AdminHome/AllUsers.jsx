@@ -20,7 +20,9 @@ import Modal from "./Modal";
 
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import Swal from "sweetalert2";
-import useSingleUserData from "./../../../hooks/useSingleUserData";
+
+import { useState } from "react";
+import { useEffect } from "react";
 
 const TABS = [
   {
@@ -29,19 +31,19 @@ const TABS = [
   },
   {
     label: "Admin",
-    value: "admin",
+    value: "Admin",
   },
   {
     label: "Volunteer",
-    value: "volunteer",
+    value: "Volunteer",
   },
   {
     label: "Donor",
-    value: "donor",
+    value: "Donor",
   },
   {
     label: "Guest",
-    value: "guest",
+    value: "Guest",
   },
 ];
 
@@ -56,14 +58,31 @@ const TABLE_HEAD = [
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const [users, isUserLoading, refetch] = useUser();
-  const [userInfo] = useSingleUserData();
+  const [pageLimit, setPageLimit] = useState(3)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [users, isUserLoading, refetch] = useUser(currentPage, pageLimit);
+  const [displayUser, setDisplayData] = useState(users)
+
+
+
+
+  useEffect(() => {
+    refetch()
+    setDisplayData(users)
+  }, [users, refetch])
+
+
+
+
+
+
+
 
   const handleUpdateAsDonor = async (id) => {
-    console.log("Approved");
+
 
     await axiosSecure.patch(`/user/admin/donorReq/${id}`).then((res) => {
-      console.log(res.data);
+
 
       if (res.data.modifiedCount > 0) {
         Swal.fire({
@@ -96,6 +115,48 @@ const AllUsers = () => {
     });
   };
 
+  //pagination start
+
+  const handlePagination = (e) => {
+    e.preventDefault()
+
+    const pageLimitValue = e.target.value;
+    setPageLimit(pageLimitValue)
+
+  }
+
+
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+  const totalPage = users?.length;
+
+
+  const handleNextPage = () => {
+
+
+    if (currentPage < totalPage) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+
+  // pagination end 
+
+  const handleTabSort = (value) => {
+    if (value === "all") {
+      refetch();
+
+      return setDisplayData(users);
+    }
+    const filterData = users.filter((req) => req?.role === value);
+    setDisplayData(filterData);
+  };
+
+
   return (
     <Card className="h-full  overflow-x-auto w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -109,7 +170,7 @@ const AllUsers = () => {
             </Typography>
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-            <Button variant="outlined" size="sm">
+            <Button onClick={() => setPageLimit(20)} variant="outlined" size="sm">
               view all
             </Button>
             {/* <Button className="flex items-center gap-3" size="sm">
@@ -120,8 +181,8 @@ const AllUsers = () => {
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <Tabs value="all" className="w-full z-0 md:w-max">
             <TabsHeader>
-              {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
+              {TABS.map(({ label, value, i }) => (
+                <Tab onClick={() => handleTabSort(value)} key={i} value={value}>
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
@@ -156,15 +217,15 @@ const AllUsers = () => {
             </tr>
           </thead>
           <tbody>
-            {users?.map(
+            {displayUser?.map(
               (
                 {
                   profileImg,
                   name,
                   email,
                   blood,
-                  districts,
-                  upuzilla,
+                  // districts,
+                  // upuzilla,
                   roleStatus,
                   _id,
                   status,
@@ -172,7 +233,7 @@ const AllUsers = () => {
                 },
                 index
               ) => {
-                const isLast = index === users.length - 1;
+                const isLast = index === displayUser.length - 1;
                 const classes = isLast
                   ? "p-4"
                   : "p-4 border-b border-blue-gray-50";
@@ -320,13 +381,30 @@ const AllUsers = () => {
       </CardBody>
       <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
         <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
+          Page {currentPage}
         </Typography>
         <div className="flex gap-2">
-          <Button variant="outlined" size="sm">
+          <select onChange={handlePagination} value={pageLimit} className="p-2 border-2 bg-blue-gray-50" name="limit" id="">
+
+            <option value={3}>
+              3
+            </option>
+            <option value={5}>
+              5
+            </option>
+            <option value={10}>
+              10
+            </option>
+            <option value={20}>
+              20
+            </option>
+          </select>
+
+          <Button onClick={handlePreviousPage} variant="outlined" size="sm">
             Previous
           </Button>
-          <Button variant="outlined" size="sm">
+
+          <Button onClick={handleNextPage} variant="outlined" size="sm">
             Next
           </Button>
         </div>

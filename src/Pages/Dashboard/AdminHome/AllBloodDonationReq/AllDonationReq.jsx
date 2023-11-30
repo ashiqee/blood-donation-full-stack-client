@@ -2,12 +2,17 @@ import Swal from "sweetalert2";
 import TableDonorReqs from "../../../../Components/Table/TableDonorReqs";
 import useDataForAdmin from "../../../../hooks/useDataForAdmin";
 import useAxiosSecure from "./../../../../hooks/useAxiosSecure";
+import { useState } from "react";
 
 const AllDonationReq = () => {
+  const [pageLimit, setPageLimit] = useState(3)
+  const [currentPage, setCurrentPage] = useState(1)
+
   const { donationsReqs, isDonationLoading, allDonationRefetch } =
-    useDataForAdmin();
+    useDataForAdmin(currentPage, pageLimit);
   const axiosSecure = useAxiosSecure();
 
+  console.log(donationsReqs);
   if (isDonationLoading) {
     return (
       <>
@@ -82,6 +87,38 @@ const AllDonationReq = () => {
     });
   };
 
+  const handlePagination = (e) => {
+    e.preventDefault()
+
+    const pageLimitValue = e.target.value;
+    setPageLimit(pageLimitValue)
+
+  }
+
+
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+  const totalPage = donationsReqs?.length;
+
+
+  const handleNextPage = () => {
+
+
+    if (currentPage < totalPage) {
+      console.log(currentPage, totalPage);
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+
+
+
+
+
   return (
     <TableDonorReqs
       data={donationsReqs}
@@ -90,6 +127,12 @@ const AllDonationReq = () => {
       loading={isDonationLoading}
       handleDeleteMyReq={handleDeleteMyReq}
       refetch={allDonationRefetch}
+      handlePagination={handlePagination}
+      handleNextPage={handleNextPage}
+      handlePreviousPage={handlePreviousPage}
+      currentPage={currentPage}
+      pageLimit={pageLimit}
+      setPageLimit={setPageLimit}
     />
   );
 };
