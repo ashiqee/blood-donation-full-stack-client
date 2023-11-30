@@ -18,11 +18,12 @@ const ProfileModal = ({ userData, isUserLoading, refetch }) => {
 
 
   const [open, setOpen] = useState(false);
+  const cancelButtonRef = useRef(null);
   const [districts, handleDistricts, upuzzila] = useDistricts();
   const [profileImage, setProfileImage] = useState("");
   const [coverImage, setCoverImage] = useState("");
 
-  const cancelButtonRef = useRef(null);
+
 
   if (isUserLoading) {
     return <>Loading..........</>

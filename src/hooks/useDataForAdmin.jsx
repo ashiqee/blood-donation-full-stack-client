@@ -16,7 +16,11 @@ const useDataForAdmin = () => {
     queryKey: ["donations"],
     enabled: !loading,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/admin/donationReqs`);
+      const res = await axiosSecure.get(`/admin/donationReqs`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       return res.data;
     },
   });

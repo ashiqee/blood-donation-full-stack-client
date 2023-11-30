@@ -16,7 +16,11 @@ const useBlogAdmin = () => {
     queryKey: ["blogDataAdmin"],
     enabled: !loading,
     queryFn: async () => {
-      const res = await axiosPublic.get(`/blog`);
+      const res = await axiosPublic.get(`/blog`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       return res.data;
     },
   });

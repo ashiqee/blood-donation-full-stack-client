@@ -11,7 +11,11 @@ const useSingleUserData = () => {
         queryKey: ['user'],
         enabled: !loading,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/user/${user?.email}`)
+            const res = await axiosSecure.get(`/user/${user?.email}`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
             console.log(res.data);
             return res.data;
         }

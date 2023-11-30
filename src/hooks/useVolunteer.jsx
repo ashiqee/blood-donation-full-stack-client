@@ -10,7 +10,11 @@ const useVolunteer = () => {
     queryKey: [user?.email, "isVolunteer"],
     enabled: !loading,
     queryFn: async () => {
-      const res = await axiosSecure.get(`/user/volunteer/${user?.email}`);
+      const res = await axiosSecure.get(`/user/volunteer/${user?.email}`, {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      });
 
       return res.data?.volunteer;
     },

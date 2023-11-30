@@ -20,7 +20,11 @@ import DonationDetails from "../Pages/Dashboard/Donation/DonationDetails";
 import AddNewBlog from "./../Pages/Dashboard/AdminHome/ContentManage/AddNewBlog";
 import PrivateRoutes from "./PrivateRoutes";
 import AdminRoutes from "./AdminRoutes";
+
+import Fund from "../Pages/Fund/Fund";
+import UserFundingHistory from "../Pages/Dashboard/FundingHistory/UserFundingHistory";
 import VolunteerRoutes from "./volunteerRoutes";
+import AdminFundingHistory from "../Pages/Dashboard/FundingHistory/adminFundingHistory";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +43,13 @@ const router = createBrowserRouter([
       {
         path: "donationRequest",
         element: <DonationRequest />,
+      },
+      {
+
+        path: "fundingPage",
+        element: <PrivateRoutes>
+          <Fund />
+        </PrivateRoutes>
       },
       {
         path: "donationDetails/:id",
@@ -86,8 +97,10 @@ const router = createBrowserRouter([
         path: "/dashboard/all-donation-request",
         element: (
           <AdminRoutes>
+
             <VolunteerRoutes>
               <AllDonationReq />
+
             </VolunteerRoutes>
           </AdminRoutes>
         ),
@@ -97,8 +110,10 @@ const router = createBrowserRouter([
         element: (
           <AdminRoutes>
             <VolunteerRoutes>
+
               <ContentManage />
             </VolunteerRoutes>
+
           </AdminRoutes>
         ),
       },
@@ -114,10 +129,22 @@ const router = createBrowserRouter([
         path: "/dashboard/addBlog",
         element: (
           <AdminRoutes>
-            <AddNewBlog />
+            <VolunteerRoutes>
+              <AddNewBlog />
+            </VolunteerRoutes>
           </AdminRoutes>
         ),
       },
+      {
+        path: '/dashboard/myFundHistory',
+        element: <UserFundingHistory />
+      },
+      {
+        path: '/dashboard/admin/allFundHistory',
+        element: <AdminRoutes>
+          <AdminFundingHistory />
+        </AdminRoutes>
+      }
     ],
   },
   {

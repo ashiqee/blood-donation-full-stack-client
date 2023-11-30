@@ -2,9 +2,9 @@ import SecTitle from "../../../Components/SectionTitle/SecTitle";
 
 const OurStory = () => {
     return (
-        <div className="container md:mx-auto mx-10 py-10">
+        <div className="container md:mx-auto  py-10">
             <SecTitle title={"Our story"} subHeading={"What To Know About Donating Blood"} />
-            <p className="text-justify" >Did you know that a blood donation of just one pint can save up to three lives? Donating blood doesn’t take very long and can help save the life of someone who has been in an accident, suffering from burns or other trauma, battling cancer or a severe blood disorder, or experiencing complications from childbirth.
+            <p className="text-justify p-10" >Did you know that a blood donation of just one pint can save up to three lives? Donating blood doesn’t take very long and can help save the life of someone who has been in an accident, suffering from burns or other trauma, battling cancer or a severe blood disorder, or experiencing complications from childbirth.
 
                 Donating blood is safe and easy, and there is always a need for donors. If you would like to donate blood, here is what you need to know: <br />
 

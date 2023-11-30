@@ -13,7 +13,11 @@ const useUser = () => {
         queryKey: ['users'],
         enabled: !loading,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/users`)
+            const res = await axiosSecure.get(`/users`, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            })
             return res.data;
         }
     })

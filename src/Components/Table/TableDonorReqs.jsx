@@ -14,12 +14,7 @@ import {
   Tab,
 } from "@material-tailwind/react";
 import { Delete, DetailsSharp, Edit } from "@mui/icons-material";
-// import Modal from "./Modal";
-// import { async } from "@firebase/util";
-// import useAxiosSecure from "../../../hooks/useAxiosSecure";
-// import Swal from "sweetalert2";
-// import useSingleUserData from "./../../../hooks/useSingleUserData";
-import { red } from "@mui/material/colors";
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useAdmin from "./../../hooks/useAdmin";

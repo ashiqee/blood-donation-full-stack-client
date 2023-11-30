@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 
 import {
+  RiFundsBoxLine,
   RiMenuFoldFill,
   RiMenuUnfoldFill,
   RiUser2Fill,
@@ -96,6 +97,14 @@ const SideBar = () => {
                       User Manage
                     </ListItem>
                   </NavLink>
+                  <NavLink to="/dashboard/admin/allFundHistory">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <RiFundsBoxLine className="h-5 w-5" />
+                      </ListItemPrefix>
+                      All Fund History
+                    </ListItem>
+                  </NavLink>
                 </>
               )}
               {/* Volunteer menu  */}
@@ -170,6 +179,15 @@ const SideBar = () => {
                   Profile
                 </ListItem>
               </NavLink>
+
+              <NavLink to="/dashboard/myFundHistory">
+                <ListItem>
+                  <ListItemPrefix>
+                    <RiFundsBoxLine className="h-5 w-5" />
+                  </ListItemPrefix>
+                  My Fund History
+                </ListItem>
+              </NavLink>
               <NavLink to="/">
                 <ListItem>
                   <ListItemPrefix>
@@ -219,6 +237,14 @@ const SideBar = () => {
                       <ListItemPrefix>
                         <RiUserShared2Line className="h-5 w-5" />
                       </ListItemPrefix>
+                    </ListItem>
+                  </NavLink>
+                  <NavLink to="/dashboard/admin/allFundHistory">
+                    <ListItem>
+                      <ListItemPrefix>
+                        <RiFundsBoxLine className="h-5 w-5" />
+                      </ListItemPrefix>
+
                     </ListItem>
                   </NavLink>
                 </>
@@ -290,6 +316,14 @@ const SideBar = () => {
                   <ListItemPrefix>
                     <RiUser2Fill className="h-5 w-5" />
                   </ListItemPrefix>
+                </ListItem>
+              </NavLink>
+              <NavLink to="/dashboard/myFundHistory">
+                <ListItem>
+                  <ListItemPrefix>
+                    <RiFundsBoxLine className="h-5 w-5" />
+                  </ListItemPrefix>
+
                 </ListItem>
               </NavLink>
               <NavLink to="/">
