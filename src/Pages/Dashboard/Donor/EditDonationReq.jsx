@@ -20,7 +20,7 @@ const EditDonationReq = () => {
     const [userInfo, isUserLoading] = useSingleUserData();
     const { id } = useParams()
 
-    console.log(id);
+    // console.log(id);
 
     const axiosSecure = useAxiosSecure();
 
@@ -48,7 +48,7 @@ const EditDonationReq = () => {
                     authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
-            console.log(res.data);
+            // console.log(res.data);
             return res.data;
         }
     })
@@ -89,7 +89,7 @@ const EditDonationReq = () => {
         };
 
         await axiosSecure.patch(`/donationReqs/${id}`, donationReqData).then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
 
             if (res.data > 0) {
                 Swal.fire({

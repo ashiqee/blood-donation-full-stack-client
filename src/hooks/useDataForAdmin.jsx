@@ -28,7 +28,7 @@ const useDataForAdmin = (currentPage, pageLimit) => {
     },
   });
 
-  console.log(donationsReqs);
+  // console.log(donationsReqs);
 
   useEffect(() => {
     allDonationRefetch()

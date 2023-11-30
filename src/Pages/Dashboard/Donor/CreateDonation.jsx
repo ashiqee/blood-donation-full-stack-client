@@ -62,7 +62,7 @@ const CreateDonation = () => {
     };
 
     await axiosSecure.post(`/donationReqs`, donationReqData).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
 
       if (res.data > 0) {
         Swal.fire({

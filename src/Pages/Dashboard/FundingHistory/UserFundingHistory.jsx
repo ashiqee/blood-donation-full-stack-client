@@ -54,7 +54,7 @@ const UserFundingHistory = () => {
         enabled: !loading,
         queryFn: async () => {
             const res = await axiosSecure.get(`/fundHistory/${user?.email}?page=${currentPage}&limit=${pageLimitInt}`)
-            console.log(res.data);
+            // console.log(res.data);
             return res.data;
         }
     })

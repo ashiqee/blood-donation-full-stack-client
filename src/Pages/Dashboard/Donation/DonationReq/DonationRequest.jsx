@@ -20,7 +20,7 @@ const DonationRequest = () => {
     enabled: !loading,
     queryFn: async () => {
       const res = await axiosPublic.get(`/donationReqPending`);
-      console.log(res.data);
+      // console.log(res.data);
       return res.data;
     },
   });

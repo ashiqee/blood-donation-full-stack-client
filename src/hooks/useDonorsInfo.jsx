@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const useDonorsInfo = async (search) => {
     const axiosPublic = usePublicAxios()
-    console.log(search);
+    // console.log(search);
 
 
     const query = new URLSearchParams(search).toString();
@@ -15,7 +15,7 @@ const useDonorsInfo = async (search) => {
         queryKey: ['donorData'],
         queryFn: async () => {
             const res = await axiosPublic.get(`/userDonor?${query}`, search)
-            console.log(res.data);
+            // console.log(res.data);
             return res.data
         }
     })
@@ -23,7 +23,7 @@ const useDonorsInfo = async (search) => {
     useEffect(() => {
         donorRefetch()
     }, [search, donorRefetch])
-    console.log(donorData);
+    // console.log(donorData);
     return donorData;
 };
 

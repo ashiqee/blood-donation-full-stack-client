@@ -12,7 +12,7 @@ const AllDonationReq = () => {
     useDataForAdmin(currentPage, pageLimit);
   const axiosSecure = useAxiosSecure();
 
-  console.log(donationsReqs);
+  // console.log(donationsReqs);
   if (isDonationLoading) {
     return (
       <>
@@ -27,9 +27,9 @@ const AllDonationReq = () => {
     );
   }
   const handleUpdateInProgress = async (id) => {
-    console.log(id);
+    // console.log(id);
     await axiosSecure.patch(`/donationDone/${id}`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
 
       if (res.data.modifiedCount > 0) {
         Swal.fire({
@@ -47,7 +47,7 @@ const AllDonationReq = () => {
   //donation cancel req
 
   const handleCancel = async (id) => {
-    console.log(id);
+    // console.log(id);
     await axiosSecure.patch(`/donationReqInCancel/${id}`).then((res) => {
       if (res.data.modifiedCount > 0) {
         Swal.fire({
@@ -109,7 +109,7 @@ const AllDonationReq = () => {
 
 
     if (currentPage < totalPage) {
-      console.log(currentPage, totalPage);
+      // console.log(currentPage, totalPage);
       setCurrentPage(currentPage + 1)
     }
   }

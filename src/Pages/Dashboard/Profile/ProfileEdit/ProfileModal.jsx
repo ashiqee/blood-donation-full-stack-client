@@ -56,7 +56,7 @@ const ProfileModal = ({ userData, isUserLoading, refetch }) => {
         if (response.ok) {
           const data = await response.json();
           const { display_url } = data.data;
-          console.log("Image uploaded successfully:", display_url);
+          // console.log("Image uploaded successfully:", display_url);
           setProfileImage(display_url);
         } else {
           console.error("Image upload failed:", response.statusText);
@@ -81,7 +81,7 @@ const ProfileModal = ({ userData, isUserLoading, refetch }) => {
         if (response.ok) {
           const data = await response.json();
           const { display_url } = data.data;
-          console.log("Cover Image uploaded successfully:", display_url);
+          // console.log("Cover Image uploaded successfully:", display_url);
           setCoverImage(display_url);
         } else {
           console.error("Image upload failed:", response.statusText);
@@ -109,7 +109,7 @@ const ProfileModal = ({ userData, isUserLoading, refetch }) => {
 
     await axiosSecure.patch(`/user/updateProfile/${_id}`, userInfo)
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         refetch()
         if (res.data.modifiedCount > 0) {
           Swal.fire({

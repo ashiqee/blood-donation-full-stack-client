@@ -9,7 +9,7 @@ const JoinAsDonor = () => {
   const axiosSecure = useAxiosSecure();
   const [userInfo, isUserLoading, refetch] = useSingleUserData();
 
-  console.log(userInfo?.role);
+  // console.log(userInfo?.role);
 
   //Donor Req Section
 
@@ -21,7 +21,7 @@ const JoinAsDonor = () => {
     await axiosSecure
       .patch(`/user/donorReq/${userInfo?._id}`, userRequest)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
 
         if (res.data.modifiedCount > 0) {
           Swal.fire({
@@ -46,7 +46,7 @@ const JoinAsDonor = () => {
     await axiosSecure
       .patch(`/user/volunteerReq/${userInfo?._id}`, donorRequest)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         refetch();
         if (res.data.modifiedCount > 0) {
           Swal.fire({
@@ -63,7 +63,7 @@ const JoinAsDonor = () => {
     <>
       <div>
         {userInfo?.role === "Guest" &&
-        userInfo?.roleStatus === "pending request for donor" ? (
+          userInfo?.roleStatus === "pending request for donor" ? (
           <Link to="#">
             {" "}
             <Button
@@ -102,7 +102,7 @@ const JoinAsDonor = () => {
 
         {/* volunteer Req  */}
         {userInfo?.role === "Donor" &&
-        userInfo?.roleStatus === "pending request for volunteer" ? (
+          userInfo?.roleStatus === "pending request for volunteer" ? (
           <>
             {" "}
             {userInfo?.role === "Donor" ? (

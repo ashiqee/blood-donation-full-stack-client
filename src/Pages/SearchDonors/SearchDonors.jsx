@@ -80,7 +80,7 @@ const SearchDonors = () => {
         queryKey: ['donorData'],
         queryFn: async () => {
             const res = await axiosPublic.get(`/userDonor?${query}`, search)
-            console.log(res.data);
+            // console.log(res.data);
             return res.data
         }
     })
@@ -89,7 +89,7 @@ const SearchDonors = () => {
         donorRefetch()
     }, [search, donorRefetch])
 
-    console.log(donorData);
+    // console.log(donorData);
 
     return (
         <div>

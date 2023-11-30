@@ -25,7 +25,7 @@ const pages = [
 
 const settings = [
   { name: "Profile", path: "/dashboard/profile" },
-  { name: "Account", path: "/account" },
+  { name: "My Fund History", path: "/dashboard/myFundHistory" },
   { name: "Dashboard", path: "/dashboard" },
 ];
 
@@ -288,16 +288,18 @@ function NavBar() {
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting, i) => (
-                    <MenuItem key={i} onClick={handleCloseUserMenu}>
-                      <NavLink
-                        to={setting?.path}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                      >
+                    <NavLink key={i}
+                      to={setting?.path}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <MenuItem onClick={handleCloseUserMenu}>
+
                         <Typography textAlign="center">
                           {setting?.name}
                         </Typography>
-                      </NavLink>
-                    </MenuItem>
+
+                      </MenuItem>
+                    </NavLink>
                   ))}
                   <MenuItem>
                     {user ? (

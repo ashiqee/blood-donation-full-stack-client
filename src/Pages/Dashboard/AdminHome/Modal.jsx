@@ -42,7 +42,7 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
         roleStatus: userReq,
       };
 
-      console.log(userUpdateRoleData);
+      // console.log(userUpdateRoleData);
 
       const userRoleUpdate = await axiosSecure
         .patch(`/user/admin/${id}`, {
@@ -51,7 +51,7 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
           }
         }, userUpdateRoleData)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.modifiedCount > 0) {
             Swal.fire({
               title: `You user role now ${userNewRole}`,
@@ -71,12 +71,12 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
         roleStatus: userReq,
       };
 
-      console.log(userUpdateRoleData);
+      // console.log(userUpdateRoleData);
 
       const userRoleUpdate = await axiosSecure
         .patch(`/user/admin/${id}`, userUpdateRoleData)
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.modifiedCount > 0) {
             Swal.fire({
               title: `You user role now ${userNewRole}`,
@@ -96,7 +96,7 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
       axiosSecure
         .patch(`/user/status/${id}`, { status: "Blocked" })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.modifiedCount > 0) {
             Swal.fire({
               title: `User status Blocked`,
@@ -112,7 +112,7 @@ const Modal = ({ userStatus, userRole, id, refetch }) => {
       axiosSecure
         .patch(`/user/status/${id}`, { status: "Active" })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           if (res.data.modifiedCount > 0) {
             Swal.fire({
               title: `User now Active`,

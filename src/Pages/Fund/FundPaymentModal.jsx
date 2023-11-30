@@ -27,7 +27,7 @@ const FundPaymentModal = ({ fundData }) => {
     const { user, loading } = useAuth();
     <LoadingCom loading={loading} />
 
-    console.log(fundData);
+    // console.log(fundData);
     const amount = fundData?.amount
 
 
@@ -35,7 +35,7 @@ const FundPaymentModal = ({ fundData }) => {
         if (amount > 0) {
             axisSecure.post('/create-payment-intent', { amount: amount })
                 .then(res => {
-                    console.log(res.data?.clientSecret);
+                    // console.log(res.data?.clientSecret);
                     setClientSecret(res.data?.clientSecret)
                 })
 
@@ -57,10 +57,10 @@ const FundPaymentModal = ({ fundData }) => {
             card,
         });
         if (error) {
-            console.log("payment error", error);
+            // console.log("payment error", error);
             setError(error.message);
         } else {
-            console.log("Payment Method", paymentMethod);
+            // console.log("Payment Method", paymentMethod);
             setError("");
         }
         //confirm payment
@@ -75,11 +75,11 @@ const FundPaymentModal = ({ fundData }) => {
                 },
             });
         if (confirmError) {
-            console.log("Confirm error");
+            // console.log("Confirm error");
         } else {
-            console.log("payment Intent", paymentIntent);
+            // console.log("payment Intent", paymentIntent);
             if (paymentIntent.status === "succeeded") {
-                console.log(("transaction id", paymentIntent.id));
+                // console.log(("transaction id", paymentIntent.id));
                 setTransactionId(paymentIntent.id);
 
                 // now save the payment in the database

@@ -125,9 +125,9 @@ const MyDonationRequests = () => {
   };
 
   const handleUpdateInProgress = async (id) => {
-    console.log(id);
+    // console.log(id);
     await axiosSecure.patch(`/donationDone/${id}`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
 
       if (res.data.modifiedCount > 0) {
         Swal.fire({
@@ -141,9 +141,9 @@ const MyDonationRequests = () => {
     });
   };
   const handleCancel = async (id) => {
-    console.log(id);
+    // console.log(id);
     await axiosSecure.patch(`/donationReqInCancel/${id}`).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
 
       if (res.data.modifiedCount > 0) {
         Swal.fire({

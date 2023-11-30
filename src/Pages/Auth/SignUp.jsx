@@ -62,7 +62,7 @@ const SignUp = () => {
         if (response.ok) {
           const data = await response.json();
           const { display_url } = data.data;
-          console.log("Image uploaded successfully:", display_url);
+          // console.log("Image uploaded successfully:", display_url);
           setProfileImage(display_url);
         } else {
           console.error("Image upload failed:", response.statusText);
@@ -172,10 +172,10 @@ const SignUp = () => {
 
     createUser(email, password).then((result) => {
       const newUser = result.user;
-      console.log(newUser);
+      // console.log(newUser);
 
       updateUser(name, photo).then(() => {
-        console.log("update User Info   ");
+        // console.log("update User Info   ");
       });
     });
 

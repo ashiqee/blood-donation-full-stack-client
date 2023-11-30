@@ -35,7 +35,7 @@ const AddNewBlog = () => {
         if (response.ok) {
           const data = await response.json();
           const { display_url } = data.data;
-          console.log("Cover Image uploaded successfully:", display_url);
+          // console.log("Cover Image uploaded successfully:", display_url);
           setBlogImg(display_url);
         } else {
           console.error("Image upload failed:", response.statusText);

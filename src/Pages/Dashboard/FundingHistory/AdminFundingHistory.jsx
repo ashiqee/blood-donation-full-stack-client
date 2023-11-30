@@ -57,7 +57,7 @@ const AdminFundingHistory = () => {
         enabled: !loading,
         queryFn: async () => {
             const res = await axiosSecure.get(`/fundHistory?page=${currentPage}&limit=${pageLimitInt}`)
-            console.log(res.data);
+            // console.log(res.data);
             return res.data;
         }
     })
@@ -97,7 +97,7 @@ const AdminFundingHistory = () => {
 
 
 
-    console.log(displayData);
+    // console.log(displayData);
     return (
         <Card className="h-full  overflow-x-auto w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">

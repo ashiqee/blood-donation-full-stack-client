@@ -19,7 +19,7 @@ const rows = [
 
 export default function TableComponents({ myDonorReq }) {
 
-  console.log(myDonorReq);
+  // console.log(myDonorReq);
   return (
     <TableContainer className="overFlow" component={Paper}>
       <Table sx={{ minWidth: "50vw" }} aria-label="simple table">

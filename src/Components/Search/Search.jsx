@@ -42,7 +42,7 @@ const Search = () => {
             email: data.get('email')
         }
 
-        console.log(searchData);
+        // console.log(searchData);
     }
     return (
         <Box component="form" onSubmit={handleSearch} >

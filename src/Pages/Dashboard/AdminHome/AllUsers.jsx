@@ -104,14 +104,14 @@ const AllUsers = () => {
     });
   };
   const handleUpdateAsVolunteer = async (id) => {
-    console.log("Approved");
+    // console.log("Approved");
 
     await axiosSecure.patch(`/user/admin/volunteerReq/${id}`, {
       headers: {
         authorization: `Bearer ${localStorage.getItem('token')}`
       }
     }).then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
 
       if (res.data.modifiedCount > 0) {
         Swal.fire({
