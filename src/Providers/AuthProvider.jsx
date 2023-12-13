@@ -6,7 +6,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
-import app from "../Config/Firebase/firebase.config";
+import { app } from "../Config/Firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
 import usePublicAxios from "../hooks/usePublicAxios";
 
@@ -69,6 +69,7 @@ const AuthProvider = ({ children }) => {
     };
   }, [auth, axiosPublic]);
   const authInfo = {
+    auth,
     loading,
     createUser,
     signIn,

@@ -1,3 +1,4 @@
+
 import LoadingCom from "../../Components/Loading/LoadingCom";
 import PageTitle from "../../Components/PageTitle/PageTitle";
 import useBlogData from "../../hooks/useBlogData";
@@ -12,6 +13,7 @@ const Blog = () => {
   }
   return (
     <div>
+
       <PageTitle text={"Blog"} subHeading={'Donate blood save life'} />
 
       {blogData?.map(data => <BlogCard key={data._id} data={data} />)}

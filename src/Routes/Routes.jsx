@@ -28,6 +28,7 @@ import AdminFundingHistory from "../Pages/Dashboard/FundingHistory/adminFundingH
 
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import EditDonationReq from "../Pages/Dashboard/Donor/editDonationReq";
+import Chat from "../Components/Chat/Chat";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,12 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: '/chat',
+        element: <PrivateRoutes>
+          <Chat />
+        </PrivateRoutes>
       },
       //donor public
       {
