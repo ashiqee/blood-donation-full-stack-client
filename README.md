@@ -7,6 +7,9 @@ The Blood Donation Management System is a full-stack MERN (MongoDB, Express.js, 
 - Frontend GitHub Repository: [Blood Donation - Frontend](https://github.com/ashiqee/blood-donation-full-stack-client)
 - Backend GitHub Repository: [Blood Donation - Backend Server](https://github.com/ashiqee/blood-donation-full-stack-server-side)
 
+## New Features impliment: 13-12-2023
+-  Chat Feature : Real time group chat user and user done with tanstack with and mongoose.
+-  Print PDF Data: This feature for  use React to print ,  User and Admin can print and save pdf Fund History Report.
 
 ## Key Features:
 
